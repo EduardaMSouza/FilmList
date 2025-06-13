@@ -1,1 +1,17 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material/core' as mat-core;
+
+@include mat-core.core();
+
+$my-primary: mat-core.define-palette(mat-core.$indigo-palette);
+$my-accent: mat-core.define-palette(mat-core.$pink-palette, A200, A100, A400);
+$my-warn: mat-core.define-palette(mat-core.$red-palette);
+
+$my-theme: mat-core.define-light-theme((
+  color: (
+    primary: $my-primary,
+    accent: $my-accent,
+    warn: $my-warn,
+  )
+));
+
+@include mat-core.all-component-themes($my-theme);
