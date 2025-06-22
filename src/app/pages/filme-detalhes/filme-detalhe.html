@@ -1,14 +1,14 @@
 <div class="filme-detalhe-container">
   <div class="poster-section">
-    <img [src]="filme?.poster_url" alt="{{ filme?.title }}">
+    <img [src]="filme.poster_url" alt="{{ filme.title }}">
   </div>
 
   <div class="info-section">
-    <h2>{{ filme?.title }}</h2>
-    <p class="overview">{{ filme?.overview }}</p>
+    <h2>{{ filme.title }}</h2>
+    <p class="overview">{{ filme.overview }}</p>
 
-    <p><strong>Data de lançamento:</strong> {{ filme?.release_date }}</p>
-    <p><strong>Tempo:</strong> {{ filme?.runtime }} minutos</p>
+    <p><strong>Data de lançamento:</strong> {{ filme.release_date }}</p>
+    <p><strong>Tempo:</strong> {{ filme.runtime }} minutos</p>
 
     <p class="generos">
       <strong>Gêneros:</strong>
