@@ -6,7 +6,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
-import { App } from './app.component'; 
+import { AppComponent } from './app.component'; 
+import { FilmeDetalheComponent } from './pages/filme-detalhes/filme-detalhe';
+import { Card } from './shared/card/cast-card';
 
 @NgModule({
   imports: [
@@ -17,7 +19,9 @@ import { App } from './app.component';
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
+    FilmeDetalheComponent,
+    Card,
   ],
-  bootstrap: [App] 
+  bootstrap: [AppComponent] 
 })
 export class AppModule { }

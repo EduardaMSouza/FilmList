@@ -1,0 +1,78 @@
+<div class="container">
+  <form [formGroup]="cadastroForm" (ngSubmit)="onSubmit()" class="cadastro-form">
+    <span class="material-icons" style="color: rgb(255, 255, 255); font-size: 100px;">
+      person_add_alt
+    </span>
+
+    <mat-form-field appearance="fill">
+      <mat-label class="mat-label-cadastro">Nome</mat-label>
+      <input
+        type="text"
+        matInput
+        formControlName="nome"
+        placeholder="Digite seu nome"
+      />
+      <mat-error *ngIf="nome?.hasError('required')">
+        Nome é <strong>obrigatório</strong>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label class="mat-label-cadastro">E-mail</mat-label>
+      <input
+        type="email"
+        matInput
+        formControlName="email"
+        placeholder="Ex. pat@example.com"
+      />
+      <mat-error *ngIf="email?.hasError('required')">
+        Email é <strong>obrigatório</strong>
+      </mat-error>
+      <mat-error *ngIf="email?.hasError('email') && !email?.hasError('required')">
+        Insira um email válido
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label class="mat-label-cadastro">Senha</mat-label>
+      <input
+        type="password"
+        matInput
+        formControlName="senha"
+        placeholder="Digite sua senha"
+      />
+      <mat-error *ngIf="senha?.hasError('required')">
+        Senha é <strong>obrigatória</strong>
+      </mat-error>
+      <mat-error *ngIf="senha?.hasError('minlength') && !senha?.hasError('required')">
+        A senha deve conter pelo menos 6 caracteres
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label class="mat-label-cadastro">Confirme a Senha</mat-label>
+      <input
+        type="password"
+        matInput
+        formControlName="confirmarSenha"
+        placeholder="Confirme sua senha"
+      />
+      <mat-error *ngIf="confirmarSenha?.hasError('required')">
+        Confirmação é <strong>obrigatória</strong>
+      </mat-error>
+      <mat-error *ngIf="confirmarSenha?.hasError('mismatch')">
+        As senhas não coincidem
+      </mat-error>
+    </mat-form-field>
+
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="cadastroForm.invalid"
+    >
+      <mat-icon>person_add</mat-icon>
+      Cadastrar
+    </button>
+  </form>
+</div>

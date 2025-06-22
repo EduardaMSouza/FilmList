@@ -1,0 +1,53 @@
+<div class="container">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+<span class="material-icons" style="color: rgb(255, 255, 255); font-size: 120px;"> person_outline </span>    <mat-form-field appearance="fill">
+      <mat-label class="mat-label-login">E-mail</mat-label>
+      <input
+        type="email"
+        matInput
+        formControlName="email"
+        placeholder="Ex. pat@example.com"
+      />
+      <mat-error *ngIf="email?.hasError('required')">
+        Email é <strong>obrigatório</strong>
+      </mat-error>
+      <mat-error *ngIf="email?.hasError('email') && !email?.hasError('required')">
+        Insira um email válido
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+      <mat-label class="mat-label-login">Senha</mat-label>
+      <input
+        type="password"
+        matInput
+        formControlName="senha"
+        placeholder="Digite sua senha"
+      />
+      <mat-error *ngIf="senha?.hasError('required')">
+        Senha é <strong>obrigatória</strong>
+      </mat-error>
+      <mat-error *ngIf="senha?.hasError('minlength') && !senha?.hasError('required')">
+        A senha deve conter pelo menos 6 caracteres
+      </mat-error>
+    </mat-form-field>
+
+    <button
+      mat-raised-button
+      color="primary"
+      type="submit"
+      [disabled]="loginForm.invalid"
+    >
+      <mat-icon>login</mat-icon>
+      Entrar
+    </button>
+
+    <div class="extra-links">
+      <a href="#">Esqueci a senha</a>
+      <label>
+        <input type="checkbox" />
+        Lembrar-me
+      </label>
+    </div>
+  </form>
+</div>

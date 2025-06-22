@@ -1,0 +1,161 @@
+.container {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-image: url('../../../../public/image.png');
+  background-size: cover;
+  background-position: center;
+}
+
+.cadastro-form {
+  max-width: 400px;
+  width: 100%;
+  padding: 30px 20px;
+  border-radius: 20px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: center;
+}
+
+.mat-label-cadastro {
+  color: #FFFFFF !important;
+  opacity: 80%;
+}
+
+.mat-mdc-form-field-error {
+  color: #e53935 !important;
+  font-weight: 600;
+  font-size: 0.875rem;
+  margin-top: 4px;
+  display: block;
+  line-height: 1.2;
+  font-family: 'Roboto', sans-serif;
+}
+
+.mat-mdc-form-field-required-marker {
+  color: #FFFFFF;
+  opacity: 80%;
+  font-weight: 700;
+  margin-left: 2px;
+  font-size: 1rem;
+  user-select: none;
+}
+
+.mat-mdc-form-field label::after {
+  color: #d32f2f;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-left: 2px;
+  user-select: none;
+}
+
+.user-icon {
+  font-size: 48px;
+  margin-bottom: 16px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+button {
+  width: 50%;
+  height: 40px;
+  font-size: 14px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 10px auto 0;
+}
+
+button mat-icon {
+  margin-right: 8px;
+}
+
+.extra-links {
+  font-size: 14px;
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  color: #ccc;
+}
+
+.extra-links a {
+  color: #ccc;
+  text-decoration: none;
+}
+
+.extra-links a:hover {
+  text-decoration: underline;
+}
+
+
+.mat-form-field .mat-input-element {
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid white !important;
+  border-radius: 12px !important;
+  padding: 10px 12px !important;
+  color: white !important;
+}
+
+.mat-mdc-text-field-wrapper {
+  background-color: rgba(48, 48, 48, 0.43) !important;
+}
+
+.mat-focus-indicator{
+  background-color: #4136A2 !important;
+}
+
+
+.mat-mdc-text-field-wrapper,
+.mat-mdc-form-field-focus .mat-mdc-text-field-wrapper,
+.mat-form-field-can-float .mat-mdc-text-field-wrapper,
+.mat-form-field-should-float .mat-mdc-text-field-wrapper,
+.mat-focused .mat-mdc-text-field-wrapper {
+  background-color: rgba(48, 48, 48, 0.43) !important;
+}
+
+.mat-mdc-form-field.mat-focused .mat-mdc-text-field-wrapper {
+  background-color: rgba(48, 48, 48, 0.43) !important;
+}
+
+.mat-mdc-form-field.mat-form-field-has-value .mat-mdc-text-field-wrapper {
+  background-color: rgba(48, 48, 48, 0.43) !important;
+}
+
+
+
+@media (max-width: 600px) {
+  .cadastro-form {
+    padding: 20px 16px;
+    margin: 0 12px;
+  }
+
+  button {
+    width: 80%;
+    height: 36px;
+    font-size: 12px;
+  }
+
+  .user-icon {
+    font-size: 36px;
+    margin-bottom: 12px;
+  }
+
+  .extra-links {
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .mat-form-field .mat-input-element {
+    padding: 8px 10px !important;
+    font-size: 14px !important;
+  }
+}

@@ -1,0 +1,71 @@
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { FilmeService } from '../../services/filme';
+import { CommonModule } from '@angular/common';
+import { Card } from '../../shared/card/cast-card';
+
+interface CastMember {
+  name: string;
+  character: string;
+  photo_url: string;
+}
+
+interface Filme {
+  id: number;
+  title: string;
+  release_date: string;
+  overview: string;
+  poster_url: string;
+  genres: [];
+  runtime: number;
+  cast: CastMember[];
+}
+
+@Component({
+  standalone: true,
+  selector: 'app-filme-detalhe',
+  templateUrl: './filme-detalhe.html',
+  styleUrls: ['./filme-detalhe.scss'],
+  imports: [CommonModule, Card]
+})
+export class FilmeDetalheComponent implements OnInit {
+  filmeId!: number;
+  filme!: Filme;
+  cast: CastMember[] = [];
+  carregando = true;
+  erro: string | null = null;
+
+  @ViewChild('scrollContainer') scrollContainer!: ElementRef;
+
+  constructor(
+    private route: ActivatedRoute,
+    private filmeService: FilmeService
+  ) {}
+
+  ngOnInit(): void {
+    this.filmeId = Number(this.route.snapshot.paramMap.get('id'));
+    this.buscarFilme();
+  }
+
+  buscarFilme(): void {
+    this.filmeService.getFilmePorId(this.filmeId).subscribe({
+      next: (data: Filme) => {
+        this.filme = data;
+        this.cast = data.cast;
+        this.carregando = false;
+      },
+      error: () => {
+        this.erro = 'Erro ao buscar filme ou filme não encontrado.';
+        this.carregando = false;
+      }
+    });
+  }
+
+  scrollLeft() {
+    this.scrollContainer.nativeElement.scrollLeft -= 220;
+  }
+
+  scrollRight() {
+    this.scrollContainer.nativeElement.scrollLeft += 220;
+  }
+}

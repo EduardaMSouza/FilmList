@@ -1,0 +1,72 @@
+.filme-detalhe-container {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 20px;
+  background-color: #1c1e26;
+  color: #ffffff;
+  border-radius: 10px;
+  gap: 20px;
+}
+
+.poster-section img {
+  width: 250px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+.info-section {
+  flex: 1;
+  min-width: 300px;
+}
+
+.overview {
+  margin-top: 10px;
+  margin-bottom: 15px;
+}
+
+.generos {
+  margin: 10px 0;
+
+  .tag {
+    display: inline-block;
+    background-color: #3a3f51;
+    padding: 5px 10px;
+    margin: 2px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+  }
+}
+
+.carousel-container {
+  display: flex;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.carousel-scroll {
+  display: flex;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  gap: 10px;
+  padding: 10px 0;
+  scrollbar-width: none;
+}
+
+.carousel-scroll::-webkit-scrollbar {
+  display: none; 
+}
+
+.carousel-button {
+  background-color: #333b4d;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  transition: background 0.3s;
+
+  &:hover {
+    background-color: #505d7a;
+  }
+}

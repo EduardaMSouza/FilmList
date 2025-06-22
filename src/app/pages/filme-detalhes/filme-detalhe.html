@@ -1,0 +1,38 @@
+<div class="filme-detalhe-container">
+  <div class="poster-section">
+    <img [src]="filme?.poster_url" alt="{{ filme?.title }}">
+  </div>
+
+  <div class="info-section">
+    <h2>{{ filme?.title }}</h2>
+    <p class="overview">{{ filme?.overview }}</p>
+
+    <p><strong>Data de lançamento:</strong> {{ filme?.release_date }}</p>
+    <p><strong>Tempo:</strong> {{ filme?.runtime }} minutos</p>
+
+    <p class="generos">
+      <strong>Gêneros:</strong>
+      <span *ngFor="let genero of filme?.genres" class="tag">
+        {{ genero }}
+      </span>
+    </p>
+
+    <h3>Elenco:</h3>
+    <hr>
+
+    <div class="carousel-container">
+      <button (click)="scrollLeft()" class="carousel-button">⬅️</button>
+
+      <div class="carousel-scroll" #scrollContainer>
+        <app-cast-card
+          *ngFor="let ator of cast"
+          [nome]="ator.name"
+          [nomePersonagem]="ator.character"
+          [imageUrl]="ator.photo_url">
+        </app-cast-card>
+      </div>
+
+      <button (click)="scrollRight()" class="carousel-button">➡️</button>
+    </div>
+  </div>
+</div>
