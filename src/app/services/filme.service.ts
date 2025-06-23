@@ -14,8 +14,8 @@ export class FilmeService {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
    getFilmesComNotas(): Observable<any[]> {
-    const filmes$ = this.http.get<any[]>(`${this.apiUrl}/movies`);
-    const ratings$ = this.http.get<any[]>(`${this.apiUrl}/ratings`);
+    const filmes$ = this.http.get<any[]>(`http://localhost:3000/movies`);
+    const ratings$ = this.http.get<any[]>(`http://localhost:3000/ratings`);
 
     return forkJoin([filmes$, ratings$]).pipe(
       map(([filmes, ratings]) => {
@@ -32,5 +32,10 @@ export class FilmeService {
         });
       })
     );
+  }
+
+  getMinhaLista(userId: number) {
+    // Busca os userMovies do usuário
+    return this.http.get<any[]>(`http://localhost:3000/userMovies?userId=${userId}`);
   }
 }

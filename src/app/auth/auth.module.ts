@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { AuthRoutingModule } from './auth-routing.module';
 import { Login } from './login/login.component';       // 👈 importe os componentes
 import { Cadastro } from './cadastro/cadastro.component';
+import { Inicio } from './inicio/inicio';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { Cadastro } from './cadastro/cadastro.component';
     RouterModule,
     AuthRoutingModule,
         Login,    
-    Cadastro
+    Cadastro,
+    Inicio
   ]
 })
 export class AuthModule { }

@@ -1,0 +1,86 @@
+.inicio-container {
+  width: 100%;
+  min-height: 100vh;
+  background: #f5f5f5;
+  display: block;
+}
+
+.inicio-content {
+  text-align: left;
+  background: none;
+  padding: 0;
+  border-radius: 0;
+  box-shadow: none;
+  max-width: 100%;
+  width: 100%;
+  margin-bottom: 32px;
+}
+
+h1 {
+  color: #222;
+  margin-bottom: 0.5rem;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+p {
+  color: #444;
+  font-size: 1.1rem;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  margin-bottom: 2rem;
+}
+
+.btn-primary, .btn-secondary {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-primary {
+  background: #667eea;
+  color: white;
+}
+
+.btn-secondary {
+  background: #f8f9fa;
+  color: #333;
+  border: 2px solid #dee2e6;
+}
+
+app-carrossel {
+  display: block;
+  margin-bottom: 32px;
+}
+
+.banner-destaque {
+  width: 100%;
+  height: 260px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 32px;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
+

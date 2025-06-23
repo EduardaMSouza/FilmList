@@ -1,0 +1,40 @@
+<header class="minha-lista-header">
+  <div class="search-bar-global">
+    <img
+      src="/loupe.png"
+      alt="Lupa"
+      class="loupe-global"
+    />
+    <input
+      type="text"
+      class="search-input-global"
+      placeholder="Buscar..."
+    />
+  </div>
+</header>
+<div class="minha-lista-container">
+  <div class="sidebar-filtros">
+    <h1>Minha Lista</h1>
+    <hr />
+    <h2>Filtros</h2>
+    <hr class="hr-secundario" />
+    <div class="filtro-titulo">Gêneros</div>
+    <div class="filtro-opcoes">
+      <label><input type="checkbox" /> Assistido</label>
+      <label><input type="checkbox" /> Pra assistir</label>
+      <label><input type="checkbox" /> Já assistido</label>
+    </div>
+  </div>
+  <div class="conteudo-lista">
+    <div class="grid-filmes">
+      <div class="card-filme" *ngFor="let filme of filmes">
+        <img [src]="filme.poster_url" [alt]="filme.title" />
+        <div class="info-filme">
+          <strong>{{ filme.title }}</strong><br />
+          Ano de lançamento: {{ filme.release_date }}<br />
+          Sinopse: {{ filme.overview }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

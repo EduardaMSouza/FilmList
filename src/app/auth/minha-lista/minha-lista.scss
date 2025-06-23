@@ -1,0 +1,163 @@
+.minha-lista-container {
+  display: flex;
+  width: 100%;
+  min-height: 100vh;
+  background: #fff;
+}
+
+.sidebar-filtros {
+  width: 220px;
+  padding: 32px 16px 0 32px;
+  border-right: 2px solid #eee;
+  color: #111;
+}
+
+.sidebar-filtros h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 0;
+  color: #111;
+}
+
+.sidebar-filtros hr {
+  margin: 2px;
+  border: none;
+  border-top: 1.8px solid #222;
+  width: 500%;
+}
+
+.sidebar-filtros .hr-secundario {
+  margin: 2px;
+  border: none;
+  border-top: 1.8px solid #222;
+  width: 50%;
+}
+
+.sidebar-filtros h2 {
+  font-size: 2rem;
+  margin-bottom: 0px;
+  font-weight: 700;
+  color: #111;
+}
+
+.filtro-titulo {
+  font-size: 1.1rem;
+  margin: 18px 0 8px 0;
+  font-weight: 600;
+  color: #111;
+}
+
+.filtro-opcoes label {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 1rem;
+  color: #111;
+}
+
+.conteudo-lista {
+  flex: 1;
+  padding: 32px 32px 0 32px;
+  color: #111;
+}
+
+.conteudo-lista h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 0;
+  color: #111;
+}
+
+.conteudo-lista hr {
+  margin: 8px 0 24px 0;
+  border: none;
+  border-top: 2px solid #222;
+  width: 100%;
+}
+
+.grid-filmes {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 32px 32px;
+  justify-items: center;
+  margin-top: 64px;
+}
+
+.card-filme {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  padding: 12px;
+  width: 180px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #111;
+}
+
+.card-filme img {
+  width: 150px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+.info-filme {
+  text-align: left;
+  font-size: 1rem;
+  color: #111;
+}
+
+.minha-lista-header {
+  width: 100vw;
+  height: 56px;
+  background: #0D1B3F;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+}
+
+.search-bar-global {
+  display: flex;
+  align-items: center;
+  margin-left: auto;
+  margin-right: 24px;
+}
+
+.loupe-global {
+  width: 24px;
+  height: 24px;
+  margin-right: 8px;
+  cursor: pointer;
+}
+
+.search-input-global {
+  height: 32px;
+  width: 200px;
+  border: 1px solid #ccc;
+  border-radius: 16px;
+  padding: 0 12px;
+  font-size: 1rem;
+  outline: none;
+  background: rgba(255,255,255,0.9);
+  color: #222;
+  transition: box-shadow 0.2s;
+}
+
+.search-input {
+  height: 32px;
+  width: 180px;
+  border: 1px solid #ccc;
+  border-radius: 16px;
+  padding: 0 12px;
+  margin-right: 12px;
+  font-size: 1rem;
+  outline: none;
+  transition: box-shadow 0.2s;
+}
+
+.search-input:focus {
+  box-shadow: 0 0 0 2px #0D1B3F33;
+  border-color: #0D1B3F;
+}
