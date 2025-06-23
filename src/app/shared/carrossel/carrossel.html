@@ -1,0 +1,13 @@
+<section class="secao">
+  <h2>{{ titulo }}</h2>
+  <div class="carrossel-wrapper">
+    <button class="nav-btn" (click)="scrollLeft()">◀</button>
+    <div class="carrossel" #scrollContainer>
+      <div class="card" *ngFor="let filme of filmes">
+        <img [src]="filme.poster_url" [alt]="filme.title">
+        <div class="nota">⭐ {{ filme.rating }}</div>
+      </div>
+    </div>
+    <button class="nav-btn" (click)="scrollRight()">▶</button>
+  </div>
+</section>

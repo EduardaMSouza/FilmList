@@ -4,7 +4,7 @@ import { FilmeService } from '../../services/filme';
 import { CommonModule } from '@angular/common';
 import { Card } from '../../shared/card/cast-card';
 
-interface CastMember {
+interface CastMember {  
   name: string;
   character: string;
   photo_url: string;
@@ -62,10 +62,10 @@ export class FilmeDetalheComponent implements OnInit {
   }
 
   scrollLeft() {
-    this.scrollContainer.nativeElement.scrollLeft -= 220;
+    this.scrollContainer.nativeElement.scrollLeft -= 270;
   }
 
   scrollRight() {
-    this.scrollContainer.nativeElement.scrollLeft += 220;
+    this.scrollContainer.nativeElement.scrollLeft += 270;
   }
 }
