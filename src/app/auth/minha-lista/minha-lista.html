@@ -18,15 +18,46 @@
     <hr />
     <h2>Filtros</h2>
     <hr class="hr-secundario" />
-    <div class="filtro-titulo">Gêneros</div>
+    <div class="filtro-titulo">Status</div>
     <div class="filtro-opcoes">
-      <label><input type="checkbox" /> Assistido</label>
-      <label><input type="checkbox" /> Pra assistir</label>
-      <label><input type="checkbox" /> Já assistido</label>
+      <label for="assistido">
+        <input 
+          type="checkbox" 
+          id="assistido" 
+          [checked]="filtros.assistido"
+          (change)="toggleFiltro('assistido')"
+        />
+        Assistido
+      </label>
+      <label for="pra-assistir">
+        <input 
+          type="checkbox" 
+          id="pra-assistir" 
+          [checked]="filtros.praAssistir"
+          (change)="toggleFiltro('praAssistir')"
+        />
+        Pra assistir
+      </label>
+      <label for="ja-assistido">
+        <input 
+          type="checkbox" 
+          id="ja-assistido" 
+          [checked]="filtros.jaAssistido"
+          (change)="toggleFiltro('jaAssistido')"
+        />
+        Já assistido
+      </label>
     </div>
+    <button 
+      class="btn-limpar-filtros" 
+      (click)="limparFiltros()"
+      *ngIf="filtros.assistido || filtros.praAssistir || filtros.jaAssistido"
+    >
+      Limpar Filtros
+    </button>
   </div>
   <div class="conteudo-lista">
-    <div class="grid-filmes">
+    <div class="grid-filmes" *ngIf="filmes.length > 0">
       <div class="card-filme" *ngFor="let filme of filmes">
         <img [src]="filme.poster_url" [alt]="filme.title" />
         <div class="info-filme">
@@ -34,6 +65,17 @@
           Ano de lançamento: {{ filme.release_date }}<br />
           Sinopse: {{ filme.overview }}
         </div>
+      </div>
+    </div>
+    <div class="sem-filmes" *ngIf="filmes.length === 0">
+      <div class="mensagem-sem-filmes">
+        <h3>Nenhum filme encontrado</h3>
+        <p *ngIf="filtros.assistido || filtros.praAssistir || filtros.jaAssistido">
+          Tente ajustar os filtros ou adicionar mais filmes à sua lista.
+        </p>
+        <p *ngIf="!filtros.assistido && !filtros.praAssistir && !filtros.jaAssistido">
+          Você ainda não tem filmes na sua lista. Que tal adicionar alguns?
+        </p>
       </div>
     </div>
   </div>
