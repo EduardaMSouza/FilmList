@@ -1,6 +1,22 @@
-<div class="filme-detalhe-container">
+<div *ngIf="carregando">
+  <p>Carregando detalhes do filme...</p>
+</div>
+
+<div *ngIf="erro">
+  <p>{{ erro }}</p>
+</div>
+
+<div *ngIf="!carregando && filme" class="filme-detalhe-container">
   <div class="poster-section">
     <img [src]="filme.poster_url" alt="{{ filme.title }}">
+
+    <app-rating
+      [averageRating]="filme.averageRating"
+      [totalUsers]="filme.totalUsers"
+      [status]="userStatus"
+      [userRatingFromBackend]="userRating"
+      [movieId]="filme.id">
+    </app-rating>
   </div>
 
   <div class="info-section">
@@ -11,7 +27,6 @@
     <p><strong>Tempo:</strong> {{ filme.runtime }} minutos</p>
 
     <p class="generos">
-      <strong>Gêneros:</strong>
       <span *ngFor="let genero of filme?.genres" class="tag">
         {{ genero }}
       </span>

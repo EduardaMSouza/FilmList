@@ -19,18 +19,27 @@
       "senha": "123456"
     }
   ],
-  "ratings": [
+  "userMovies": [
     {
-      "id": 1,
-      "movieId": 574475,
+      "id": 8,
       "userId": 1,
-      "rating": 4
+      "movieId": 3,
+      "status": "ja-assisti",
+      "rating": 9
     },
     {
-      "id": 2,
-      "movieId": 574475,
+      "id": 8,
       "userId": 2,
-      "rating": 5
+      "movieId": 3,
+      "status": "ja-assisti",
+      "rating": 9
+    },
+    {
+      "id": 574475,
+      "userId": 3,
+      "movieId": 574475,
+      "status": "",
+      "rating": null
     }
   ],
   "movies": [

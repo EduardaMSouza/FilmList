@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { FilmeService } from '../../services/filme';
+import { FilmeService } from '../../services/filme.service';
 import { CommonModule } from '@angular/common';
 import { Card } from '../../shared/card/cast-card';
+import { RatingComponent } from '../../rating/rating.component';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 interface CastMember {  
   name: string;
@@ -16,9 +18,11 @@ interface Filme {
   release_date: string;
   overview: string;
   poster_url: string;
-  genres: [];
+  genres: string[];
   runtime: number;
   cast: CastMember[];
+  averageRating: number;
+  totalUsers: number;
 }
 
 @Component({
@@ -26,7 +30,7 @@ interface Filme {
   selector: 'app-filme-detalhe',
   templateUrl: './filme-detalhe.html',
   styleUrls: ['./filme-detalhe.scss'],
-  imports: [CommonModule, Card]
+  imports: [CommonModule, Card, RatingComponent],
 })
 export class FilmeDetalheComponent implements OnInit {
   filmeId!: number;
@@ -35,16 +39,29 @@ export class FilmeDetalheComponent implements OnInit {
   carregando = true;
   erro: string | null = null;
 
+  userStatus: string = '';
+  userRating: number | null = null;
+
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
 
   constructor(
     private route: ActivatedRoute,
-    private filmeService: FilmeService
+    private filmeService: FilmeService,
+    private http: HttpClient
   ) {}
 
   ngOnInit(): void {
     this.filmeId = Number(this.route.snapshot.paramMap.get('id'));
     this.buscarFilme();
+    this.buscarUserMovieData();
+  }
+
+  get headers(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    return new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
   }
 
   buscarFilme(): void {
@@ -57,15 +74,34 @@ export class FilmeDetalheComponent implements OnInit {
       error: () => {
         this.erro = 'Erro ao buscar filme ou filme não encontrado.';
         this.carregando = false;
-      }
+      },
     });
   }
 
+  buscarUserMovieData(): void {
+    this.http
+      .get<any>(`http://localhost:3000/userMovies/${this.filmeId}`, { headers: this.headers })
+      .subscribe({
+        next: (userMovie) => {
+          this.userStatus = userMovie.status;
+          this.userRating = userMovie.rating;
+        },
+        error: (err) => {
+          if (err.status === 404) {
+            this.userStatus = '';
+            this.userRating = null;
+          } else {
+            console.error('Erro ao buscar status/nota do usuário:', err);
+          }
+        },
+      });
+  }
+
   scrollLeft() {
-    this.scrollContainer.nativeElement.scrollLeft -= 270;
+    this.scrollContainer.nativeElement.scrollLeft -= 272;
   }
 
   scrollRight() {
-    this.scrollContainer.nativeElement.scrollLeft += 270;
+    this.scrollContainer.nativeElement.scrollLeft += 272;
   }
 }

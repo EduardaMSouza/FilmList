@@ -26,6 +26,7 @@ function authenticateToken(req: Request & { user?: any }, res: Response, next: N
   }
 
   try {
+    console.log("dfgfdgdfg"+token)
     const user = jwt.verify(token, SECRET_KEY);
     req.user = user;
     next();
@@ -116,6 +117,20 @@ server.get('/movies', (req: Request, res: Response) => {
   });
 });
 
+server.get('/userMovies/:movieId', authenticateToken, (req: Request & { user?: any }, res: Response) => {
+  const userId = req.user.userId;
+  const movieId = parseInt(req.params.movieId);
+  const db = JSON.parse(fs.readFileSync(path.join(__dirname, '../db.json'), 'utf-8'));
+  const userMovie = db.userMovies.find((um: any) => um.userId === userId && um.movieId === movieId);
+  
+  if (!userMovie) {
+    return res.status(404).json({ message: 'Nenhum status definido para esse filme' });
+  }
+
+  res.status(200).json(userMovie);
+});
+
+
 server.get('/movies/:id', (req: Request & { user?: any }, res: Response) => {
   const db = JSON.parse(fs.readFileSync(path.join(__dirname, '../db.json'), 'utf-8'));
   const movieId = parseInt(req.params.id);
@@ -125,23 +140,23 @@ server.get('/movies/:id', (req: Request & { user?: any }, res: Response) => {
     return res.status(404).json({ message: 'Filme não encontrado' });
   }
 
-  const ratings = db.ratings.filter((r: any) => r.movieId === movieId);
-  const averageRating = ratings.length > 0
-    ? ratings.reduce((sum: number, r: any) => sum + r.rating, 0) / ratings.length
+  const userMovies = db.userMovies.filter((r: any) => r.movieId === movieId);
+  const averageRating = userMovies.length > 0
+    ? userMovies.reduce((sum: number, r: any) => sum + r.rating, 0) / userMovies.length
     : null;
 
   const userRating = req.user
-    ? db.ratings.find((r: any) => r.movieId === movieId && r.userId === req.user.userId)
+    ? db.userMovies.find((r: any) => r.movieId === movieId && r.userId === req.user.userId)
     : null;
 
   res.status(200).json({
     ...movie,
     averageRating,
+    totalUsers: userMovies.length,
     userRating: userRating ? userRating.rating : null
   });
 });
 
-// ==================== USER MOVIES (Lista do usuário) ====================
 server.get('/userMovies', (req: Request & { user?: any }, res: Response) => {
   const userId = req.user.userId;
   const db = JSON.parse(fs.readFileSync(path.join(__dirname, '../db.json'), 'utf-8'));
@@ -182,18 +197,52 @@ server.patch('/userMovies/:id', (req: Request & { user?: any }, res: Response) =
   const dbPath = path.join(__dirname, '../db.json');
   const db = JSON.parse(fs.readFileSync(dbPath, 'utf-8'));
 
-  const userMovie = db.userMovies.find((um: any) => um.id == id);
+  let userMovieIndex = db.userMovies.findIndex((um: any) => um.id == id);
 
-  if (!userMovie || userMovie.userId !== userId) {
-    return res.status(404).json({ message: 'Registro não encontrado ou sem permissão' });
+  if (userMovieIndex === -1) {
+    if (status == null) {
+      return res.status(404).json({ message: 'Registro não encontrado' });
+    }
+
+    const newUserMovie = {
+      id: Number(id),
+      userId: userId,
+      movieId: Number(id),
+      status: status ?? null,
+      rating: rating ?? null
+    };
+    db.userMovies.push(newUserMovie);
+
+    fs.writeFileSync(dbPath, JSON.stringify(db, null, 2));
+    return res.status(201).json(newUserMovie);
+  } else {
+    const userMovie = db.userMovies[userMovieIndex];
+
+    if (userMovie.userId !== userId) {
+      return res.status(404).json({ message: 'Registro não encontrado ou sem permissão' });
+    }
+
+    if (status === null || status === undefined) {
+      db.userMovies.splice(userMovieIndex, 1);
+      fs.writeFileSync(dbPath, JSON.stringify(db, null, 2));
+      return res.status(200).json({ message: 'Registro removido' });
+    }
+
+
+    if (status !== undefined) userMovie.status = status;
+
+    if (userMovie.status !== 'já assisti' && userMovie.rating != null) {
+      userMovie.rating = null;
+    } else {
+      if (rating !== undefined) userMovie.rating = rating;
+    }
+
+    fs.writeFileSync(dbPath, JSON.stringify(db, null, 2));
+    return res.status(200).json(userMovie);
   }
-
-  if (status !== undefined) userMovie.status = status;
-  if (rating !== undefined) userMovie.rating = rating;
-
-  fs.writeFileSync(dbPath, JSON.stringify(db, null, 2));
-  res.status(200).json(userMovie);
 });
+
+
 
 server.delete('/userMovies/:id', (req: Request & { user?: any }, res: Response) => {
   const userId = req.user.userId;
@@ -225,18 +274,18 @@ server.post('/ratings', authenticateToken, (req: Request & { user?: any }, res: 
     return res.status(404).json({ message: 'Filme não encontrado' });
   }
 
-  const existingRating = db.ratings.find((r: any) => r.movieId === movieId && r.userId === userId);
+  const existingRating = db.userMovies.find((r: any) => r.movieId === movieId && r.userId === userId);
 
   if (existingRating) {
     existingRating.rating = rating;
   } else {
     const newRating = {
-      id: db.ratings.length > 0 ? db.ratings[db.ratings.length - 1].id + 1 : 1,
+      id: db.userMovies.length > 0 ? db.userMovies[db.userMovies.length - 1].id + 1 : 1,
       movieId,
       userId,
       rating
     };
-    db.ratings.push(newRating);
+    db.userMovies.push(newRating);
   }
 
   fs.writeFileSync(dbPath, JSON.stringify(db, null, 2));
