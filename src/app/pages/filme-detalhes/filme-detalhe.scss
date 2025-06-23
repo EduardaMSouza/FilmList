@@ -6,17 +6,24 @@
   color: #ffffff;
   border-radius: 10px;
   gap: 20px;
+  margin: auto;
 }
 
-.poster-section img {
-  width: 250px;
-  border-radius: 8px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+.poster-section  {
+  display: flex;
+  flex-direction: column;
+  img{
+    width: 416px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  }
+  
 }
 
 .info-section {
   flex: 1;
   min-width: 300px;
+  max-width: 1200px;
 }
 
 .overview {

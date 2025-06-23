@@ -1,0 +1,57 @@
+<div class="rating-container">
+  <div class="average-rating" [ngClass]="getRatingColor(averageRating)">
+    {{ averageRating }}
+  </div>
+  <div class="rating-text">
+    <strong>Nota geral</strong> <span class="user-count">({{ totalUsers }} usuários)</span>
+  </div>
+
+  <div class="user-rating">
+    <div class="square" [ngClass]="getRatingColor(userRating || 0)">
+      <span *ngIf="userRating">{{ userRating }}</span>
+    </div>
+    <span>
+      {{ hoverRating ? 'Minha nota: ' + hoverRating : 'Minha nota' }}
+    </span>
+  </div>
+
+  <div class="watch-status">
+    <button
+      class="status-button"
+      [class.active]="isStatusActive('quero-assistir')"
+      (click)="setWatchStatus('quero-assistir')">
+      Quero Assistir
+    </button>
+
+    <button
+      class="status-button"
+      [class.active]="isStatusActive('assistindo')"
+      (click)="setWatchStatus('assistindo')">
+      Assistindo
+    </button>
+
+    <button
+      class="status-button"
+      [class.active]="isStatusActive('ja-assisti')"
+      (click)="setWatchStatus('ja-assisti')">
+      Já Assisti
+    </button>
+  </div>
+
+  <div class="rating-bar-container" [class.disabled]="watchStatus !== 'ja-assisti'">
+    <div class="rating-bar">
+      <ng-container *ngFor="let num of [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]">
+        <div
+          class="bar-segment"
+          [ngClass]="getBarSegmentClasses(num)"
+          (mouseenter)="setHoverRating(num)"
+          (mouseleave)="clearHover()"
+          (click)="setUserRating(num)">
+        </div>
+      </ng-container>
+    </div>
+    <div class="rating-warning" *ngIf="watchStatus !== 'ja-assisti'">
+      Marque como "Já Assisti" para poder avaliar.
+    </div>
+  </div>
+</div>

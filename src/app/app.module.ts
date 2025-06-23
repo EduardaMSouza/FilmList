@@ -9,6 +9,9 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { AppComponent } from './app.component'; 
 import { FilmeDetalheComponent } from './pages/filme-detalhes/filme-detalhe';
 import { Card } from './shared/card/cast-card';
+import { RatingComponent } from './rating/rating.component';
+import { tokenInterceptor } from './interceptors/token.interceptor';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 @NgModule({
   imports: [
@@ -21,7 +24,8 @@ import { Card } from './shared/card/cast-card';
     MatInputModule,
     FilmeDetalheComponent,
     Card,
+    RatingComponent
   ],
-  bootstrap: [AppComponent] 
+  bootstrap: [AppComponent],
 })
 export class AppModule { }
