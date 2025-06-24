@@ -10,6 +10,7 @@ export const routes: Routes = [
   { path: 'auth/register', component: Cadastro },
   { path: 'auth/inicio', component: Inicio },
   { path: 'minha-lista', component: MinhaLista },
+  { path: 'inicio', component: Inicio },
   { path: 'filme/:id', component: FilmeDetalheComponent },
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },  
   { path: '**', redirectTo: 'auth/login', pathMatch: 'full' }

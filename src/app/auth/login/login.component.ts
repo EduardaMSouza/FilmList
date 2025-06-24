@@ -77,7 +77,7 @@ export class Login {
                 next: (response) => {
                     this.authService.saveToken(response.token);
 
-                    this.router.navigate(['/auth/register']);
+                    this.router.navigate(['/auth/inicio']);
 
                     console.log('Login bem-sucedido:', response);
                 },

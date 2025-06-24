@@ -1,7 +1,42 @@
-<div class="banner-destaque">
-    <img src="https://occ-0-8407-90.1.nflxso.net/dnm/api/v6/6AYY37jfdO6hpXcMjf9Yu5cnmO0/AAAABVr3AdhNeyrkV5sEf77Or41uiW1k_PNS0dxk2LGzXXjDRAHhRYfBJqm0RlSKiOlnV-A-9fC_u1g3euupMaFmKo3uoHedUlwSwTKJ.jpg?r=850" alt="Banner The Witcher">
+<div class="banner-carrossel">
+  <div class="banner-container">
+    <div class="banner-slide" *ngFor="let banner of banners; let i = index" 
+         [class.active]="i === bannerAtivo" 
+         [style.background-image]="'url(' + banner.imagem + ')'">
+      <div class="banner-overlay"></div>
+      <div class="banner-content">
+        <h2>{{ banner.titulo }}</h2>
+        <p>{{ banner.descricao }}</p>
+      </div>
+    </div>
+  </div>
+  
+  <button class="banner-nav prev" (click)="bannerAnterior()">
+    <span>&lt;</span>
+  </button>
+  
+  <button class="banner-nav next" (click)="proximoBanner()">
+    <span>&gt;</span>
+  </button>
+  
+  <div class="banner-indicators">
+    <button *ngFor="let banner of banners; let i = index" 
+            class="indicator" 
+            [class.active]="i === bannerAtivo"
+            (click)="irParaBanner(i)">
+    </button>
+  </div>
 </div>
 
-<app-carrossel [titulo]="'Continuar assistindo'" [filmes]="filmes"></app-carrossel>
+<nav class="menu-navegacao">
+  <a [routerLink]="['/inicio']" class="menu-item hide-mobile">Início</a>
+  <a [routerLink]="['/filmes']" class="menu-item">Filmes</a>
+  <a [routerLink]="['/series']" class="menu-item">Séries</a>
+  <a [routerLink]="['/mais-votados']" class="menu-item">Mais votados</a>
+  <a [routerLink]="['/minha-lista']" class="menu-item">Minha Lista</a>
+  <input type="text" class="menu-search" placeholder="Buscar...">
+</nav>
 
+<app-carrossel [titulo]="'Continuar assistindo'" [filmes]="filmes"></app-carrossel>
+<app-carrossel [titulo]="'Filmes'" [filmes]="filmes"></app-carrossel>
 <app-carrossel [titulo]="'Melhores avaliações'" [filmes]="filmesMelhorAvaliados"></app-carrossel>
