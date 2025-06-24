@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { FilmeService } from '../../services/filme.service';
 import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
 import { CarrosselComponent } from '../../shared/carrossel/carrossel';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-minha-lista',
   standalone: true,
-  imports: [CommonModule, CarrosselComponent],
+  imports: [CommonModule, RouterModule, CarrosselComponent, FormsModule],
   templateUrl: './minha-lista.html',
   styleUrl: './minha-lista.scss'
 })
@@ -15,12 +17,15 @@ export class MinhaLista implements OnInit {
   filmes: any[] = [];
   filmesFiltrados: any[] = [];
   todosFilmes: any[] = [];
+  busca: string = '';
   
   filtros = {
     assistido: false,
     praAssistir: false,
     jaAssistido: false
   };
+
+  menuAberto = false;
 
   constructor(private filmeService: FilmeService) {}
 
@@ -53,8 +58,7 @@ export class MinhaLista implements OnInit {
       
       return false;
     });
-    
-    this.filmes = [...this.filmesFiltrados];
+    this.filtrarFilmes();
   }
 
   toggleFiltro(tipo: 'assistido' | 'praAssistir' | 'jaAssistido') {
@@ -70,6 +74,18 @@ export class MinhaLista implements OnInit {
     };
     this.filmes = [...this.todosFilmes];
     this.filmesFiltrados = [...this.todosFilmes];
+    this.filtrarFilmes();
+  }
+
+  filtrarFilmes() {
+    const termo = this.busca.trim().toLowerCase();
+    if (!termo) {
+      this.filmes = [...this.filmesFiltrados];
+      return;
+    }
+    this.filmes = this.filmesFiltrados.filter(filme =>
+      filme.title.toLowerCase().includes(termo)
+    );
   }
 
   getStatusText(status: string): string {

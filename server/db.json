@@ -68,6 +68,13 @@
       "movieId": 493529,
       "status": "assistindo",
       "rating": 9
+    },
+    {
+      "id": 574475,
+      "userId": 2,
+      "movieId": 574475,
+      "status": "ja-assisti",
+      "rating": 9
     }
   ],
   "movies": [
