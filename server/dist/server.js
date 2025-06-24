@@ -23,7 +23,6 @@ function authenticateToken(req, res, next) {
         return res.status(401).json({ message: 'Token não enviado' });
     }
     try {
-        console.log("dfgfdgdfg" + token);
         const user = jsonwebtoken_1.default.verify(token, SECRET_KEY);
         req.user = user;
         next();
@@ -125,7 +124,11 @@ server.get('/userMovies', (req, res) => {
     const userId = req.user.userId;
     const db = JSON.parse(fs_1.default.readFileSync(path_1.default.join(__dirname, '../db.json'), 'utf-8'));
     const userMovies = db.userMovies.filter((um) => um.userId === userId);
-    res.status(200).json(userMovies);
+    const response = userMovies.map((userMovie) => {
+        const movie = db.movies.find((m) => m.id === userMovie.movieId);
+        return Object.assign(Object.assign({}, userMovie), { movie: movie || null });
+    });
+    res.status(200).json(response);
 });
 server.post('/userMovies', (req, res) => {
     const { movieId, status, rating } = req.body;

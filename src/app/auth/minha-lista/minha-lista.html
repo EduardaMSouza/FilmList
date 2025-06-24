@@ -27,7 +27,7 @@
           [checked]="filtros.assistido"
           (change)="toggleFiltro('assistido')"
         />
-        Assistido
+        Assistindo
       </label>
       <label for="pra-assistir">
         <input 
@@ -45,7 +45,7 @@
           [checked]="filtros.jaAssistido"
           (change)="toggleFiltro('jaAssistido')"
         />
-        Já assistido
+        Já assisti
       </label>
     </div>
     <button 
@@ -62,8 +62,6 @@
         <img [src]="filme.poster_url" [alt]="filme.title" />
         <div class="info-filme">
           <strong>{{ filme.title }}</strong><br />
-          Ano de lançamento: {{ filme.release_date }}<br />
-          Sinopse: {{ filme.overview }}
         </div>
       </div>
     </div>

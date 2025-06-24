@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, forkJoin, map } from 'rxjs';
 
 @Injectable({
@@ -9,6 +9,14 @@ export class FilmeService {
   private apiUrl = 'http://localhost:3000/movies';  
 
   constructor(private http: HttpClient) {}
+
+  private get headers(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    return new HttpHeaders({
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    });
+  }
 
   getFilmePorId(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
@@ -34,8 +42,22 @@ export class FilmeService {
     );
   }
 
-  getMinhaLista(userId: number) {
-    // Busca os userMovies do usuário
-    return this.http.get<any[]>(`http://localhost:3000/userMovies?userId=${userId}`);
+  getFilmesMinhaLista(): Observable<any[]> {
+    return this.http.get<any[]>(`http://localhost:3000/userMovies`, { headers: this.headers }).pipe(
+      map(userMovies => {
+        return userMovies.map(userMovie => {
+          if (!userMovie.movie) {
+            return null; 
+          }
+
+          return {
+            ...userMovie.movie,
+            userRating: userMovie.rating || null,
+            status: userMovie.status || '',
+            userMovieId: userMovie.id || null
+          };
+        }).filter(filme => filme !== null); 
+      })
+    );
   }
 }

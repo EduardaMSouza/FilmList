@@ -23,23 +23,16 @@
     {
       "id": 8,
       "userId": 1,
-      "movieId": 3,
+      "movieId": 574475,
       "status": "ja-assisti",
       "rating": 9
     },
     {
       "id": 8,
       "userId": 2,
-      "movieId": 3,
+      "movieId": 574475,
       "status": "ja-assisti",
       "rating": 9
-    },
-    {
-      "id": 574475,
-      "userId": 3,
-      "movieId": 574475,
-      "status": "",
-      "rating": null
     }
   ],
   "movies": [

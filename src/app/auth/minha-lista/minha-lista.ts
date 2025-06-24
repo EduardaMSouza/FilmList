@@ -16,7 +16,6 @@ export class MinhaLista implements OnInit {
   filmesFiltrados: any[] = [];
   todosFilmes: any[] = [];
   
-  // Filtros
   filtros = {
     assistido: false,
     praAssistir: false,
@@ -26,39 +25,29 @@ export class MinhaLista implements OnInit {
   constructor(private filmeService: FilmeService) {}
 
   ngOnInit() {
-    const userId = Number(localStorage.getItem('userId'));
-    if (userId) {
-      this.filmeService.getMinhaLista(userId).subscribe(userMovies => {
-        const movieIds = userMovies.map(um => um.movieId);
-        this.filmeService.getFilmesComNotas().subscribe(filmes => {
-          this.todosFilmes = filmes.filter(filme => movieIds.includes(filme.id));
-          this.filmes = [...this.todosFilmes];
-          this.filmesFiltrados = [...this.todosFilmes];
-        });
-      });
-    }
+    this.filmeService.getFilmesMinhaLista().subscribe(filmes => {
+      this.todosFilmes = filmes;
+      this.filmes = [...this.todosFilmes];
+      this.filmesFiltrados = [...this.todosFilmes];
+      console.log('Filmes da minha lista:', this.todosFilmes);
+    });
   }
 
-  // Método para aplicar filtros
   aplicarFiltros() {
     this.filmesFiltrados = this.todosFilmes.filter(filme => {
-      // Aqui você pode implementar a lógica de filtro baseada no status do filme
-      // Por enquanto, vamos mostrar todos os filmes se nenhum filtro estiver ativo
       const nenhumFiltroAtivo = !this.filtros.assistido && !this.filtros.praAssistir && !this.filtros.jaAssistido;
       
       if (nenhumFiltroAtivo) {
         return true;
       }
       
-      // Implementar lógica de filtro baseada no status do filme
-      // Por exemplo, se o filme tem uma propriedade 'status' ou 'watched'
-      if (this.filtros.assistido && filme.watched) {
+      if (this.filtros.assistido && filme.status === 'assistindo') {
         return true;
       }
-      if (this.filtros.praAssistir && filme.watchlist) {
+      if (this.filtros.praAssistir && (filme.status === 'pra-assistir' || filme.status === '')) {
         return true;
       }
-      if (this.filtros.jaAssistido && filme.completed) {
+      if (this.filtros.jaAssistido && filme.status === 'ja-assisti') {
         return true;
       }
       
@@ -68,13 +57,11 @@ export class MinhaLista implements OnInit {
     this.filmes = [...this.filmesFiltrados];
   }
 
-  // Método para alternar filtros
   toggleFiltro(tipo: 'assistido' | 'praAssistir' | 'jaAssistido') {
     this.filtros[tipo] = !this.filtros[tipo];
     this.aplicarFiltros();
   }
 
-  // Método para limpar todos os filtros
   limparFiltros() {
     this.filtros = {
       assistido: false,
@@ -83,5 +70,35 @@ export class MinhaLista implements OnInit {
     };
     this.filmes = [...this.todosFilmes];
     this.filmesFiltrados = [...this.todosFilmes];
+  }
+
+  getStatusText(status: string): string {
+    switch (status) {
+      case 'assistindo':
+        return 'Assistindo';
+      case 'pra-assistir':
+        return 'Pra assistir';
+      case 'ja-assisti':
+        return 'Já assisti';
+      case '':
+        return 'Sem status';
+      default:
+        return 'Sem status';
+    }
+  }
+
+  getStatusClass(status: string): string {
+    switch (status) {
+      case 'assistindo':
+        return 'status-assistindo';
+      case 'pra-assistir':
+        return 'status-pra-assistir';
+      case 'ja-assisti':
+        return 'status-ja-assisti';
+      case '':
+        return 'status-sem-status';
+      default:
+        return 'status-sem-status';
+    }
   }
 }

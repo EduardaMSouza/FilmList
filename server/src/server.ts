@@ -26,7 +26,6 @@ function authenticateToken(req: Request & { user?: any }, res: Response, next: N
   }
 
   try {
-    console.log("dfgfdgdfg"+token)
     const user = jwt.verify(token, SECRET_KEY);
     req.user = user;
     next();
@@ -122,14 +121,13 @@ server.get('/userMovies/:movieId', authenticateToken, (req: Request & { user?: a
   const movieId = parseInt(req.params.movieId);
   const db = JSON.parse(fs.readFileSync(path.join(__dirname, '../db.json'), 'utf-8'));
   const userMovie = db.userMovies.find((um: any) => um.userId === userId && um.movieId === movieId);
-  
+
   if (!userMovie) {
     return res.status(404).json({ message: 'Nenhum status definido para esse filme' });
   }
 
   res.status(200).json(userMovie);
 });
-
 
 server.get('/movies/:id', (req: Request & { user?: any }, res: Response) => {
   const db = JSON.parse(fs.readFileSync(path.join(__dirname, '../db.json'), 'utf-8'));
@@ -160,9 +158,20 @@ server.get('/movies/:id', (req: Request & { user?: any }, res: Response) => {
 server.get('/userMovies', (req: Request & { user?: any }, res: Response) => {
   const userId = req.user.userId;
   const db = JSON.parse(fs.readFileSync(path.join(__dirname, '../db.json'), 'utf-8'));
+
   const userMovies = db.userMovies.filter((um: any) => um.userId === userId);
-  res.status(200).json(userMovies);
+
+  const response = userMovies.map((userMovie: any) => {
+    const movie = db.movies.find((m: any) => m.id === userMovie.movieId);
+    return {
+      ...userMovie,
+      movie: movie || null
+    };
+  });
+
+  res.status(200).json(response);
 });
+
 
 server.post('/userMovies', (req: Request & { user?: any }, res: Response) => {
   const { movieId, status, rating } = req.body;
@@ -228,7 +237,6 @@ server.patch('/userMovies/:id', (req: Request & { user?: any }, res: Response) =
       return res.status(200).json({ message: 'Registro removido' });
     }
 
-
     if (status !== undefined) userMovie.status = status;
 
     if (userMovie.status !== 'já assisti' && userMovie.rating != null) {
@@ -241,8 +249,6 @@ server.patch('/userMovies/:id', (req: Request & { user?: any }, res: Response) =
     return res.status(200).json(userMovie);
   }
 });
-
-
 
 server.delete('/userMovies/:id', (req: Request & { user?: any }, res: Response) => {
   const userId = req.user.userId;

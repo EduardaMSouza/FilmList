@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AuthRoutingModule } from './auth-routing.module';
-import { Login } from './login/login.component';       // 👈 importe os componentes
+import { Login } from './login/login.component';   
 import { Cadastro } from './cadastro/cadastro.component';
 import { Inicio } from './inicio/inicio';
 
@@ -14,7 +14,7 @@ import { Inicio } from './inicio/inicio';
     ReactiveFormsModule,
     RouterModule,
     AuthRoutingModule,
-        Login,    
+    Login,    
     Cadastro,
     Inicio
   ]
