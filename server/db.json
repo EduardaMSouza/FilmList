@@ -30,8 +30,43 @@
     {
       "id": 8,
       "userId": 2,
-      "movieId": 574475,
+      "movieId": 552524,
       "status": "ja-assisti",
+      "rating": 9
+    },
+    {
+      "id": 8,
+      "userId": 2,
+      "movieId": 1087192,
+      "status": "ja-assisti",
+      "rating": 9
+    },
+    {
+      "id": 8,
+      "userId": 2,
+      "movieId": 1426776,
+      "status": "pra-assistir",
+      "rating": 9
+    },
+    {
+      "id": 8,
+      "userId": 2,
+      "movieId": 1011477,
+      "status": "pra-assistir",
+      "rating": 9
+    },
+    {
+      "id": 8,
+      "userId": 2,
+      "movieId": 341174,
+      "status": "assistindo",
+      "rating": 9
+    },
+    {
+      "id": 8,
+      "userId": 2,
+      "movieId": 493529,
+      "status": "assistindo",
       "rating": 9
     }
   ],
