@@ -424,7 +424,6 @@
   }
 }
 
-// Estilos do header e navegação
 .filmes-header {
   background: #0D1B3F;
   padding: 16px 32px;
@@ -607,16 +606,15 @@
   margin-top: 8px;
 }
 
-// Customização do ng2-nouislider
 .noUi-target {
-  background: #23272f !important; // cinza escuro
+  background: #23272f !important;  
   border-radius: 8px;
   border: none;
   box-shadow: none;
 }
 
 .noUi-connect {
-  background: #444950 !important; // cinza mais claro
+  background: #444950 !important; 
 }
 
 .noUi-handle {
@@ -644,7 +642,6 @@
   display: none;
 }
 
-// Força máxima na cor da faixa conectada do nouislider
 .noUi-target .noUi-connect {
   background: gray !important;
   box-shadow: none !important;

@@ -97,11 +97,29 @@ export class FilmeDetalheComponent implements OnInit {
       });
   }
 
-  scrollLeft() {
-    this.scrollContainer.nativeElement.scrollLeft -= 272;
-  }
+scrollLeft() {
+  const container = this.scrollContainer.nativeElement;
+  const screenWidth = window.innerWidth;
 
-  scrollRight() {
-    this.scrollContainer.nativeElement.scrollLeft += 272;
+  if (screenWidth <= 480) {
+    const cardWidth = 160 + 16;
+    container.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+  } else {
+    container.scrollBy({ left: -container.offsetWidth, behavior: 'smooth' });
   }
+}
+
+scrollRight() {
+  const container = this.scrollContainer.nativeElement;
+  const screenWidth = window.innerWidth;
+
+  if (screenWidth <= 480) {
+    const cardWidth = 160 + 16;
+    container.scrollBy({ left: cardWidth, behavior: 'smooth' });
+  } else {
+    container.scrollBy({ left: container.offsetWidth, behavior: 'smooth' });
+  }
+}
+
+
 }

@@ -1,10 +1,11 @@
 .rating-container {
-  background-color: #2c2f48;
+  padding: 12px;
+  border-radius: 10px;
+  width: 100%;
+  max-width: 250px;
+  font-size: 14px;
   color: white;
-  padding: 10px;
-  border-radius: 8px;
-  width: 250px;
-  font-family: Arial, sans-serif;
+  margin-top: 20px;
 }
 
 .average-rating {

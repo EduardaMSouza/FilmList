@@ -9,6 +9,7 @@ html, body {
   background: #fff;
   color-scheme: light dark;
   overflow-x: hidden;
+font-family: 'Poppins', sans-serif;
   @include mat.theme((
     color: mat.$violet-palette,
     typography: Roboto,

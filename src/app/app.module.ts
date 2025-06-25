@@ -24,7 +24,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     MatInputModule,
     FilmeDetalheComponent,
     Card,
-    RatingComponent
+    RatingComponent,
+    FormsModule
   ],
   bootstrap: [AppComponent],
 })

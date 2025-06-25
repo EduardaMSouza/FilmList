@@ -21,7 +21,6 @@ export class Filmes implements OnInit {
   todosFilmes: any[] = [];
   busca: string = '';
   
-  // Filtros de ano e gêneros para o novo layout
   anoMin = 1910;
   anoMax = 2025;
   anosSelecionados: number[] = [this.anoMin, this.anoMax];
@@ -39,7 +38,6 @@ export class Filmes implements OnInit {
 
   filtros = {
     generos: {} as { [key: string]: boolean },
-    // outros filtros podem ser adicionados aqui
   };
 
   menuAberto = false;
@@ -127,12 +125,10 @@ export class Filmes implements OnInit {
 
   aplicarFiltros() {
     this.filmesFiltrados = this.todosFilmes.filter(filme => {
-      // Filtro de ano (ng2-nouislider)
       const anoFilme = new Date(filme.release_date).getFullYear();
       if (anoFilme < this.anosSelecionados[0] || anoFilme > this.anosSelecionados[1]) {
         return false;
       }
-      // Filtro de gêneros
       const generosAtivos = Object.keys(this.filtros.generos).filter(g => this.filtros.generos[g]);
       if (generosAtivos.length > 0) {
         if (!filme.genre_names || !generosAtivos.some(g => filme.genre_names.includes(g))) {
