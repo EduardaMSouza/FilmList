@@ -1,4 +1,4 @@
-import jsonServer from 'json-server';
+import jsonServer from 'json-server'; 
 import jwt from 'jsonwebtoken';
 import fs from 'fs';
 import path from 'path';
@@ -140,7 +140,9 @@ server.get('/movies/:id', (req: Request & { user?: any }, res: Response) => {
 
   const userMovies = db.userMovies.filter((r: any) => r.movieId === movieId);
   const averageRating = userMovies.length > 0
-    ? userMovies.reduce((sum: number, r: any) => sum + r.rating, 0) / userMovies.length
+    ? Math.round(
+        (userMovies.reduce((sum: number, r: any) => sum + r.rating, 0) / userMovies.length) * 10
+      ) / 10
     : null;
 
   const userRating = req.user
@@ -171,7 +173,6 @@ server.get('/userMovies', (req: Request & { user?: any }, res: Response) => {
 
   res.status(200).json(response);
 });
-
 
 server.post('/userMovies', (req: Request & { user?: any }, res: Response) => {
   const { movieId, status, rating } = req.body;
