@@ -88,6 +88,7 @@ server.use((req: Request & { user?: any }, res: Response, next: NextFunction) =>
 server.get('/movies', (req: Request, res: Response) => {
   const db = JSON.parse(fs.readFileSync(path.join(__dirname, '../db.json'), 'utf-8'));
   let movies = db.movies;
+  const userMovies = db.userMovies || [];
 
   const { page = 1, limit = 10, year, genre } = req.query;
 
@@ -102,11 +103,17 @@ server.get('/movies', (req: Request, res: Response) => {
   const start = (Number(page) - 1) * Number(limit);
   const paginatedMovies = movies.slice(start, start + Number(limit));
 
-  const response = paginatedMovies.map((movie: any) => ({
-    id: movie.id,
-    title: movie.title,
-    thumbnail: movie.thumbnail
-  }));
+  const response = paginatedMovies.map((movie: any) => {
+    const ratings = userMovies.filter((um: any) => um.movieId === movie.id && um.rating != null);
+    const avgRating = ratings.length > 0 ?
+      Math.round((ratings.reduce((sum: number, um: any) => sum + um.rating, 0) / ratings.length) * 10) / 10 : null;
+    return {
+      id: movie.id,
+      title: movie.title,
+      poster_url: movie.poster_url || movie.thumbnail || '',
+      rating: avgRating
+    };
+  });
 
   res.status(200).json({
     total: movies.length,
@@ -297,6 +304,17 @@ server.post('/ratings', authenticateToken, (req: Request & { user?: any }, res: 
 
   fs.writeFileSync(dbPath, JSON.stringify(db, null, 2));
   res.status(200).json({ message: 'Nota salva' });
+});
+
+server.get('/ratings', (req: Request, res: Response) => {
+  const db = JSON.parse(fs.readFileSync(path.join(__dirname, '../db.json'), 'utf-8'));
+  const userMovies = db.userMovies || [];
+  const ratings = userMovies.filter((um: any) => um.rating != null).map((um: any) => ({
+    movieId: um.movieId,
+    userId: um.userId,
+    rating: um.rating
+  }));
+  res.status(200).json(ratings);
 });
 
 server.use(router);

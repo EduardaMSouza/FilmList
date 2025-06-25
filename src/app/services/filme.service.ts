@@ -2,6 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, forkJoin, map } from 'rxjs';
 
+export interface Filme {
+  id: number;
+  title: string;
+  poster_url: string;
+  rating?: number | null;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -21,16 +28,17 @@ export class FilmeService {
   getFilmePorId(id: number): Observable<any> {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
-   getFilmesComNotas(): Observable<any[]> {
-    const filmes$ = this.http.get<any[]>(`http://localhost:3000/movies`);
+   getFilmesComNotas(): Observable<Filme[]> {
+    const filmes$ = this.http.get<any>(`http://localhost:3000/movies`);
     const ratings$ = this.http.get<any[]>(`http://localhost:3000/ratings`);
-
+    
     return forkJoin([filmes$, ratings$]).pipe(
       map(([filmes, ratings]) => {
-        return filmes.map(filme => {
-          const ratingsDoFilme = ratings.filter(r => r.movieId === filme.id);
+        const filmesArray = filmes.data || filmes;
+        return filmesArray.map((filme: Filme) => {
+          const ratingsDoFilme = ratings.filter((r: any) => r.movieId === filme.id);
           const media = ratingsDoFilme.length
-            ? ratingsDoFilme.reduce((acc, r) => acc + r.rating, 0) / ratingsDoFilme.length
+            ? ratingsDoFilme.reduce((acc: number, r: any) => acc + r.rating, 0) / ratingsDoFilme.length
             : null;
 
           return {
