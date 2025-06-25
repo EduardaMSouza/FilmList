@@ -6,7 +6,7 @@
         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
       </svg>
     </button>
-    <div class="carrossel flex gap-6 px-2">
+    <div class="carrossel w-full flex gap-6 px-2 justify-center items-center">
       <div class="card relative min-w-[140px] w-[140px] h-[200px] bg-gray-200 rounded-xl shadow flex flex-col items-center justify-end overflow-hidden" *ngFor="let filme of pagedFilmes">
         <img [src]="filme.poster_url" [alt]="filme.title" class="w-full h-full object-cover rounded-xl" />
         <div class="nota absolute bottom-2 left-2 bg-green-500 text-white font-bold px-3 py-1 rounded text-base shadow">

@@ -176,9 +176,12 @@ server.get('/userMovies', (req: Request & { user?: any }, res: Response) => {
 
   const response = userMovies.map((userMovie: any) => {
     const movie = db.movies.find((m: any) => m.id === userMovie.movieId);
+    const allUserMovies = db.userMovies.filter((um: any) => um.movieId === userMovie.movieId && um.rating != null);
+    const avgRating = allUserMovies.length > 0 ?
+      Math.round((allUserMovies.reduce((sum: number, um: any) => sum + um.rating, 0) / allUserMovies.length) * 10) / 10 : null;
     return {
       ...userMovie,
-      movie: movie || null
+      movie: movie ? { ...movie, rating: avgRating } : null
     };
   });
 

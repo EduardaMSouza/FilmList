@@ -136,7 +136,10 @@ server.get('/userMovies', (req, res) => {
     }
     const response = userMovies.map((userMovie) => {
         const movie = db.movies.find((m) => m.id === userMovie.movieId);
-        return Object.assign(Object.assign({}, userMovie), { movie: movie || null });
+        const allUserMovies = db.userMovies.filter((um) => um.movieId === userMovie.movieId && um.rating != null);
+        const avgRating = allUserMovies.length > 0 ?
+            Math.round((allUserMovies.reduce((sum, um) => sum + um.rating, 0) / allUserMovies.length) * 10) / 10 : null;
+        return Object.assign(Object.assign({}, userMovie), { movie: movie ? Object.assign(Object.assign({}, movie), { rating: avgRating }) : null });
     });
     res.status(200).json(response);
 });
