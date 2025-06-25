@@ -73,12 +73,25 @@ server.get('/movies', (req, res) => {
     const db = JSON.parse(fs_1.default.readFileSync(path_1.default.join(__dirname, '../db.json'), 'utf-8'));
     let movies = db.movies;
     const userMovies = db.userMovies || [];
-    const { page = 1, limit = 10, year, genre } = req.query;
+    const { page = 1, limit = 10, year, yearMin, yearMax, genre } = req.query;
     if (year) {
         movies = movies.filter((m) => new Date(m.release_date).getFullYear() == Number(year));
     }
+    if (yearMin && yearMax) {
+        movies = movies.filter((m) => {
+            const ano = new Date(m.release_date).getFullYear();
+            return ano >= Number(yearMin) && ano <= Number(yearMax);
+        });
+    }
     if (genre) {
-        movies = movies.filter((m) => m.genres && m.genres.includes(genre));
+        movies = movies.filter((m) => {
+            if (!m.genres)
+                return false;
+            if (Array.isArray(m.genres)) {
+                return m.genres.includes(genre);
+            }
+            return typeof m.genres === 'string' && m.genres === genre;
+        });
     }
     const start = (Number(page) - 1) * Number(limit);
     const paginatedMovies = movies.slice(start, start + Number(limit));

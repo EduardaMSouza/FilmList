@@ -21,6 +21,7 @@ export class Filmes implements OnInit {
   todosFilmes: any[] = [];
   busca: string = '';
   
+  // Filtros de ano e gêneros para o novo layout
   anoMin = 1910;
   anoMax = 2025;
   anosSelecionados: number[] = [this.anoMin, this.anoMax];
@@ -38,6 +39,7 @@ export class Filmes implements OnInit {
 
   filtros = {
     generos: {} as { [key: string]: boolean },
+    // outros filtros podem ser adicionados aqui
   };
 
   menuAberto = false;
@@ -124,20 +126,30 @@ export class Filmes implements OnInit {
   }
 
   aplicarFiltros() {
-    this.filmesFiltrados = this.todosFilmes.filter(filme => {
-      const anoFilme = new Date(filme.release_date).getFullYear();
-      if (anoFilme < this.anosSelecionados[0] || anoFilme > this.anosSelecionados[1]) {
-        return false;
-      }
-      const generosAtivos = Object.keys(this.filtros.generos).filter(g => this.filtros.generos[g]);
-      if (generosAtivos.length > 0) {
-        if (!filme.genre_names || !generosAtivos.some(g => filme.genre_names.includes(g))) {
-          return false;
-        }
-      }
-      return true;
-    });
-    this.filtrarFilmes();
+    const generosAtivos = Object.keys(this.filtros.generos).filter(g => this.filtros.generos[g]);
+    if (generosAtivos.length === 1) {
+      // Filtro de ano + gênero no backend
+      this.filmeService.getFilmesPorAnoEGenero(this.anosSelecionados[0], this.anosSelecionados[1], generosAtivos[0])
+        .subscribe(filmes => {
+          this.filmesFiltrados = filmes;
+          this.filtrarFilmes();
+        });
+    } else {
+      // Filtro de ano no backend, múltiplos gêneros no frontend
+      this.filmeService.getFilmesPorAno(this.anosSelecionados[0], this.anosSelecionados[1])
+        .subscribe(filmes => {
+          if (generosAtivos.length > 1) {
+            this.filmesFiltrados = filmes.filter(filme =>
+              filme.genres && generosAtivos.some(g =>
+                Array.isArray(filme.genres) ? filme.genres.includes(g) : filme.genres === g
+              )
+            );
+          } else {
+            this.filmesFiltrados = filmes;
+          }
+          this.filtrarFilmes();
+        });
+    }
   }
 
   limparFiltros() {

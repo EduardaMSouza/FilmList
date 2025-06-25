@@ -85,4 +85,16 @@ export class FilmeService {
       }))
     );
   }
+
+  getFilmesPorAno(anoMin: number, anoMax: number): Observable<Filme[]> {
+    return this.http.get<any>(`${this.apiUrl}?yearMin=${anoMin}&yearMax=${anoMax}`).pipe(
+      map(res => res.data || res)
+    );
+  }
+
+  getFilmesPorAnoEGenero(anoMin: number, anoMax: number, genero: string): Observable<Filme[]> {
+    return this.http.get<any>(`${this.apiUrl}?yearMin=${anoMin}&yearMax=${anoMax}&genre=${encodeURIComponent(genero)}`).pipe(
+      map(res => res.data || res)
+    );
+  }
 }
