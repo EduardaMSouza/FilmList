@@ -29,7 +29,7 @@ export class FilmeService {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
    getFilmesComNotas(): Observable<Filme[]> {
-    const filmes$ = this.http.get<any>(`http://localhost:3000/movies`);
+    const filmes$ = this.http.get<any>(`http://localhost:3000/movies?limit=20`);
     const ratings$ = this.http.get<any[]>(`http://localhost:3000/ratings`);
     
     return forkJoin([filmes$, ratings$]).pipe(

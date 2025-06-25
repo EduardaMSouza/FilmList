@@ -122,6 +122,10 @@
   </div>
 
   <div class="conteudo-filmes">
+    <!-- Carrossel centralizado -->
+    <div class="w-full flex justify-center mb-8">
+      <app-carrossel [titulo]="'Filmes em destaque'" [filmes]="filmes"></app-carrossel>
+    </div>
     <div class="grid-filmes" *ngIf="filmes.length > 0">
       <div
         class="card-filme"

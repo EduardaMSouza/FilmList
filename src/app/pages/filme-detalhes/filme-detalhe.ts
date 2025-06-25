@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { Card } from '../../shared/card/cast-card';
 import { RatingComponent } from '../../rating/rating.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Filme as FilmeBase } from '../../services/filme.service';
+import { CarrosselComponent } from '../../shared/carrossel/carrossel';
 
 interface CastMember {  
   name: string;
@@ -12,12 +14,9 @@ interface CastMember {
   photo_url: string;
 }
 
-interface Filme {
-  id: number;
-  title: string;
+interface FilmeDetalhe extends FilmeBase {
   release_date: string;
   overview: string;
-  poster_url: string;
   genres: string[];
   runtime: number;
   cast: CastMember[];
@@ -30,17 +29,19 @@ interface Filme {
   selector: 'app-filme-detalhe',
   templateUrl: './filme-detalhe.html',
   styleUrls: ['./filme-detalhe.scss'],
-  imports: [CommonModule, Card, RatingComponent],
+  imports: [CommonModule, Card, RatingComponent, CarrosselComponent],
 })
 export class FilmeDetalheComponent implements OnInit {
   filmeId!: number;
-  filme!: Filme;
+  filme!: FilmeDetalhe;
   cast: CastMember[] = [];
   carregando = true;
   erro: string | null = null;
 
   userStatus: string = '';
   userRating: number | null = null;
+
+  filmes: FilmeBase[] = [];
 
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
 
@@ -54,6 +55,7 @@ export class FilmeDetalheComponent implements OnInit {
     this.filmeId = Number(this.route.snapshot.paramMap.get('id'));
     this.buscarFilme();
     this.buscarUserMovieData();
+    this.buscarFilmesRecomendados();
   }
 
   get headers(): HttpHeaders {
@@ -66,7 +68,7 @@ export class FilmeDetalheComponent implements OnInit {
 
   buscarFilme(): void {
     this.filmeService.getFilmePorId(this.filmeId).subscribe({
-      next: (data: Filme) => {
+      next: (data: FilmeDetalhe) => {
         this.filme = data;
         this.cast = data.cast;
         this.carregando = false;
@@ -97,29 +99,39 @@ export class FilmeDetalheComponent implements OnInit {
       });
   }
 
-scrollLeft() {
-  const container = this.scrollContainer.nativeElement;
-  const screenWidth = window.innerWidth;
-
-  if (screenWidth <= 480) {
-    const cardWidth = 160 + 16;
-    container.scrollBy({ left: -cardWidth, behavior: 'smooth' });
-  } else {
-    container.scrollBy({ left: -container.offsetWidth, behavior: 'smooth' });
+  buscarFilmesRecomendados(): void {
+    this.filmeService.getFilmesComNotas().subscribe((data: FilmeBase[]) => {
+      // Exemplo: pega os 10 mais bem avaliados, excluindo o atual
+      this.filmes = data
+        .filter(f => f.id !== this.filmeId)
+        .sort((a, b) => (b.rating || 0) - (a.rating || 0))
+        .slice(0, 10);
+    }, () => {
+      this.filmes = [];
+    });
   }
-}
 
-scrollRight() {
-  const container = this.scrollContainer.nativeElement;
-  const screenWidth = window.innerWidth;
+  scrollLeft() {
+    const container = this.scrollContainer.nativeElement;
+    const screenWidth = window.innerWidth;
 
-  if (screenWidth <= 480) {
-    const cardWidth = 160 + 16;
-    container.scrollBy({ left: cardWidth, behavior: 'smooth' });
-  } else {
-    container.scrollBy({ left: container.offsetWidth, behavior: 'smooth' });
+    if (screenWidth <= 480) {
+      const cardWidth = 160 + 16;
+      container.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+    } else {
+      container.scrollBy({ left: -container.offsetWidth, behavior: 'smooth' });
+    }
   }
-}
 
+  scrollRight() {
+    const container = this.scrollContainer.nativeElement;
+    const screenWidth = window.innerWidth;
 
+    if (screenWidth <= 480) {
+      const cardWidth = 160 + 16;
+      container.scrollBy({ left: cardWidth, behavior: 'smooth' });
+    } else {
+      container.scrollBy({ left: container.offsetWidth, behavior: 'smooth' });
+    }
+  }
 }

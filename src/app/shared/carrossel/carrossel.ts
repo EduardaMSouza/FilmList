@@ -11,13 +11,31 @@ import { Component, Input, ViewChild, ElementRef } from '@angular/core';
 export class CarrosselComponent {
   @Input() titulo: string = '';
   @Input() filmes: any[] = [];
-  @ViewChild('scrollContainer') scrollContainer!: ElementRef;
+  pageIndex: number = 0;
+  readonly pageSize: number = 10;
+
+  get pagedFilmes() {
+    const start = this.pageIndex * this.pageSize;
+    return this.filmes.slice(start, start + this.pageSize);
+  }
+
+  get canScrollLeft() {
+    return this.pageIndex > 0;
+  }
+
+  get canScrollRight() {
+    return (this.pageIndex + 1) * this.pageSize < this.filmes.length;
+  }
 
   scrollLeft() {
-    this.scrollContainer.nativeElement.scrollLeft -= 220;
+    if (this.canScrollLeft) {
+      this.pageIndex--;
+    }
   }
 
   scrollRight() {
-    this.scrollContainer.nativeElement.scrollLeft += 220;
+    if (this.canScrollRight) {
+      this.pageIndex++;
+    }
   }
 } 

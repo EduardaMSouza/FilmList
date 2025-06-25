@@ -1,13 +1,23 @@
-<section class="secao">
-  <h2>{{ titulo }}</h2>
-  <div class="carrossel-wrapper">
-    <button class="nav-btn" (click)="scrollLeft()">◀</button>
-    <div class="carrossel" #scrollContainer>
-      <div class="card" *ngFor="let filme of filmes">
-        <img [src]="filme.poster_url" [alt]="filme.title">
-        <div class="nota">⭐ {{ filme.rating }}</div>
+<section class="secao w-full flex flex-col items-center my-8">
+  <h2 class="text-xl font-semibold mb-4 text-center">{{ titulo }}</h2>
+  <div class="carrossel-wrapper w-full flex flex-row items-center justify-center bg-white rounded-xl shadow-md py-4">
+    <button class="nav-btn mr-2" (click)="scrollLeft()" [disabled]="!canScrollLeft">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+      </svg>
+    </button>
+    <div class="carrossel flex gap-6 px-2">
+      <div class="card relative min-w-[140px] w-[140px] h-[200px] bg-gray-200 rounded-xl shadow flex flex-col items-center justify-end overflow-hidden" *ngFor="let filme of pagedFilmes">
+        <img [src]="filme.poster_url" [alt]="filme.title" class="w-full h-full object-cover rounded-xl" />
+        <div class="nota absolute bottom-2 left-2 bg-green-500 text-white font-bold px-3 py-1 rounded text-base shadow">
+          ⭐ {{ filme.rating }}
+        </div>
       </div>
     </div>
-    <button class="nav-btn" (click)="scrollRight()">▶</button>
+    <button class="nav-btn ml-2" (click)="scrollRight()" [disabled]="!canScrollRight">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+      </svg>
+    </button>
   </div>
 </section>
