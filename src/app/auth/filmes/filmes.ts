@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FilmeService } from '../../services/filme.service';
 import { UserMovieService } from '../../services/user-movie.service';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Router } from '@angular/router';
+import { RouterModule, Router, ActivatedRoute } from '@angular/router';
 import { CarrosselComponent } from '../../shared/carrossel/carrossel';
 import { FormsModule } from '@angular/forms';
 import { NouisliderModule } from 'ng2-nouislider';
@@ -54,15 +54,25 @@ export class Filmes implements OnInit {
   constructor(
     private filmeService: FilmeService,
     private userMovieService: UserMovieService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      if (params['busca'] !== undefined) {
+        this.busca = params['busca'];
+        setTimeout(() => this.filtrarFilmes(), 0);
+      }
+    });
     this.filmeService.getFilmesComNotas().subscribe((filmes: any[]) => {
       this.todosFilmes = filmes;
       this.filmes = [...this.todosFilmes];
       this.filmesFiltrados = [...this.todosFilmes];
       console.log('Todos os filmes:', this.todosFilmes);
+      if (this.busca) {
+        setTimeout(() => this.filtrarFilmes(), 0);
+      }
     });
   }
 
