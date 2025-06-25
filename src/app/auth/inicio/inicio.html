@@ -36,12 +36,28 @@
   <input type="text" class="menu-search" placeholder="Buscar...">
 </nav>
 
-<div *ngIf="filmesContinuarAssistindo.length > 0" class="w-full flex justify-center my-8">
+<div *ngIf="filmesContinuarAssistindo.length > 0" class="carrossel-wrapper">
   <app-carrossel [titulo]="'Continuar assistindo'" [filmes]="filmesContinuarAssistindo"></app-carrossel>
 </div>
-<div class="w-full flex justify-center my-8">
+
+<div class="carrossel-wrapper">
   <app-carrossel [titulo]="'Filmes'" [filmes]="filmes"></app-carrossel>
 </div>
-<div class="w-full flex justify-center my-8">
+
+<div class="carrossel-wrapper">
   <app-carrossel [titulo]="'Melhores avaliações'" [filmes]="filmesMelhorAvaliados"></app-carrossel>
 </div>
+
+<div class="carrossel-wrapper" *ngIf="filmesAventura.length > 0">
+  <app-carrossel [titulo]="'Aventura'" [filmes]="filmesAventura"></app-carrossel>
+</div>
+<div class="carrossel-wrapper" *ngIf="filmesTerror.length > 0">
+  <app-carrossel [titulo]="'Terror'" [filmes]="filmesTerror"></app-carrossel>
+</div>
+<div class="carrossel-wrapper" *ngIf="filmesComedia.length > 0">
+  <app-carrossel [titulo]="'Comédia'" [filmes]="filmesComedia"></app-carrossel>
+</div>
+<div class="carrossel-wrapper" *ngIf="filmesDrama.length > 0">
+  <app-carrossel [titulo]="'Drama'" [filmes]="filmesDrama"></app-carrossel>
+</div>
+

@@ -7,6 +7,7 @@ export interface Filme {
   title: string;
   poster_url: string;
   rating?: number | null;
+  genres?: string | string[];
 }
 
 @Injectable({
@@ -26,7 +27,7 @@ export class FilmeService {
   }
 
   getFilmePorId(id: number): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${id}`);
+    return this.http.get<any>(`http://localhost:3000/movies/${id}`);
   }
    getFilmesComNotas(): Observable<Filme[]> {
     const filmes$ = this.http.get<any>(`http://localhost:3000/movies?limit=400`);
@@ -70,6 +71,18 @@ export class FilmeService {
           };
         }).filter(filme => filme !== null); 
       })
+    );
+  }
+
+  getFilmesPorGenero(genero: string): Observable<Filme[]> {
+    return this.getFilmesComNotas().pipe(
+      map(filmes => filmes.filter(filme => {
+        if (!filme.genres) return false;
+        if (Array.isArray(filme.genres)) {
+          return filme.genres.some((g: string) => g.toLowerCase().includes(genero.toLowerCase()));
+        }
+        return typeof filme.genres === 'string' && filme.genres.toLowerCase().includes(genero.toLowerCase());
+      }))
     );
   }
 }

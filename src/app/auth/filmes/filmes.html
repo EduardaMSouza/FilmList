@@ -52,7 +52,6 @@
     </div>
     <hr />
 
-    <!-- Gêneros -->
     <div>
       <div class="filtro-titulo">Gêneros</div>
       <div class="filtro-opcoes">
@@ -91,7 +90,6 @@
       Limpar Filtros
     </button>
     
-    <!-- Botão de Adicionar à Lista -->
     <div class="adicionar-filmes-section">
       <hr class="hr-secundario" />
       <button 
@@ -102,7 +100,6 @@
         {{ modoAdicao ? 'Cancelar Seleção' : 'Adicionar à Lista' }}
       </button>
       
-      <!-- Botões de ação quando em modo de adição -->
       <div class="acoes-adicao" *ngIf="modoAdicao">
         <button 
           class="btn-confirmar-adicao"
@@ -122,10 +119,6 @@
   </div>
 
   <div class="conteudo-filmes">
-    <!-- Carrossel centralizado -->
-    <div class="w-full flex justify-center mb-8">
-      <app-carrossel [titulo]="'Filmes em destaque'" [filmes]="filmes"></app-carrossel>
-    </div>
     <div class="grid-filmes" *ngIf="filmes.length > 0">
       <div
         class="card-filme"
@@ -142,7 +135,6 @@
           <span class="genero-filme">{{ filme.genre_names?.join(', ') || 'Gênero não informado' }}</span><br />
           Sinopse: {{ filme.overview | slice:0:100 }}...
         </div>
-        <!-- Overlay de seleção -->
         <div class="overlay-selecao" *ngIf="modoAdicao">
           <div class="checkbox-selecao" [class.checked]="isFilmeSelecionado(filme)">
             <span *ngIf="isFilmeSelecionado(filme)">✓</span>

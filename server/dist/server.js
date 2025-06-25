@@ -14,7 +14,7 @@ server.use(middlewares);
 server.use(json_server_1.default.bodyParser);
 const SECRET_KEY = 'seu_secret_key_super_secreto';
 function generateToken(payload) {
-    return jsonwebtoken_1.default.sign(payload, SECRET_KEY, { expiresIn: '1h' });
+    return jsonwebtoken_1.default.sign(payload, SECRET_KEY, { expiresIn: '24h' });
 }
 function authenticateToken(req, res, next) {
     const authHeader = req.headers.authorization;
@@ -64,8 +64,7 @@ server.post('/login', (req, res) => {
 });
 server.use((req, res, next) => {
     if (req.path === '/login' ||
-        req.path === '/register' ||
-        req.path.startsWith('/movies')) {
+        req.path === '/register') {
         return next();
     }
     authenticateToken(req, res, next);
@@ -102,7 +101,8 @@ server.get('/movies', (req, res) => {
     });
 });
 server.get('/userMovies/:movieId', authenticateToken, (req, res) => {
-    const userId = req.user.userId;
+    var _a;
+    const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.userId;
     const movieId = parseInt(req.params.movieId);
     const db = JSON.parse(fs_1.default.readFileSync(path_1.default.join(__dirname, '../db.json'), 'utf-8'));
     const userMovie = db.userMovies.find((um) => um.userId === userId && um.movieId === movieId);
@@ -112,6 +112,7 @@ server.get('/userMovies/:movieId', authenticateToken, (req, res) => {
     res.status(200).json(userMovie);
 });
 server.get('/movies/:id', (req, res) => {
+    var _a, _b;
     const db = JSON.parse(fs_1.default.readFileSync(path_1.default.join(__dirname, '../db.json'), 'utf-8'));
     const movieId = parseInt(req.params.id);
     const movie = db.movies.find((m) => m.id === movieId);
@@ -122,10 +123,11 @@ server.get('/movies/:id', (req, res) => {
     const averageRating = userMovies.length > 0
         ? Math.round((userMovies.reduce((sum, r) => sum + r.rating, 0) / userMovies.length) * 10) / 10
         : null;
-    const userRating = req.user
-        ? db.userMovies.find((r) => r.movieId === movieId && r.userId === req.user.userId)
-        : null;
-    res.status(200).json(Object.assign(Object.assign({}, movie), { averageRating, totalUsers: userMovies.length, userRating: userRating ? userRating.rating : null }));
+    let userMovieInfo = null;
+    if (req.user) {
+        userMovieInfo = db.userMovies.find((r) => r.movieId === movieId && r.userId === req.user.userId);
+    }
+    res.status(200).json(Object.assign(Object.assign({}, movie), { averageRating, totalUsers: userMovies.length, userRating: (_a = userMovieInfo === null || userMovieInfo === void 0 ? void 0 : userMovieInfo.rating) !== null && _a !== void 0 ? _a : null, userStatus: (_b = userMovieInfo === null || userMovieInfo === void 0 ? void 0 : userMovieInfo.status) !== null && _b !== void 0 ? _b : null }));
 });
 server.get('/userMovies', (req, res) => {
     const userId = req.user.userId;

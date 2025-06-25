@@ -17,7 +17,9 @@
       [totalUsers]="filme.totalUsers"
       [status]="userStatus"
       [userRatingFromBackend]="userRating"
-      [movieId]="filme.id">
+      [movieId]="filme.id"
+      (refreshMovie)="buscarFilme()">
+
     </app-rating>
   </div>
 
@@ -33,10 +35,6 @@
         {{ genero }}
       </span>
     </p>
-
-    <div class="w-full flex justify-center my-8">
-      <app-carrossel [titulo]="'Recomendados'" [filmes]="filmes"></app-carrossel>
-    </div>
 
     <div class="elenco">
       <h3>Elenco:</h3>

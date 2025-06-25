@@ -14,7 +14,7 @@ server.use(jsonServer.bodyParser);
 const SECRET_KEY = 'seu_secret_key_super_secreto';
 
 function generateToken(payload: object) {
-  return jwt.sign(payload, SECRET_KEY, { expiresIn: '1h' });
+  return jwt.sign(payload, SECRET_KEY, { expiresIn: '24h' });
 }
 
 function authenticateToken(req: Request & { user?: any }, res: Response, next: NextFunction) {
@@ -77,8 +77,7 @@ server.post('/login', (req: Request, res: Response) => {
 server.use((req: Request & { user?: any }, res: Response, next: NextFunction) => {
   if (
     req.path === '/login' ||
-    req.path === '/register' ||
-    req.path.startsWith('/movies')
+    req.path === '/register'
   ) {
     return next();
   }
@@ -123,8 +122,8 @@ server.get('/movies', (req: Request, res: Response) => {
   });
 });
 
-server.get('/userMovies/:movieId', authenticateToken, (req: Request & { user?: any }, res: Response) => {
-  const userId = req.user.userId;
+server.get('/userMovies/:movieId', authenticateToken, (req: Request, res: Response) => {
+  const userId = req.user?.userId;
   const movieId = parseInt(req.params.movieId);
   const db = JSON.parse(fs.readFileSync(path.join(__dirname, '../db.json'), 'utf-8'));
   const userMovie = db.userMovies.find((um: any) => um.userId === userId && um.movieId === movieId);
@@ -146,23 +145,27 @@ server.get('/movies/:id', (req: Request & { user?: any }, res: Response) => {
   }
 
   const userMovies = db.userMovies.filter((r: any) => r.movieId === movieId);
+
   const averageRating = userMovies.length > 0
     ? Math.round(
         (userMovies.reduce((sum: number, r: any) => sum + r.rating, 0) / userMovies.length) * 10
       ) / 10
     : null;
 
-  const userRating = req.user
-    ? db.userMovies.find((r: any) => r.movieId === movieId && r.userId === req.user.userId)
-    : null;
+  let userMovieInfo = null;
+  if (req.user) {
+    userMovieInfo = db.userMovies.find((r: any) => r.movieId === movieId && r.userId === req.user.userId);
+  }
 
   res.status(200).json({
     ...movie,
     averageRating,
     totalUsers: userMovies.length,
-    userRating: userRating ? userRating.rating : null
+    userRating: userMovieInfo?.rating ?? null,
+    userStatus: userMovieInfo?.status ?? null 
   });
 });
+
 
 server.get('/userMovies', (req: Request & { user?: any }, res: Response) => {
   const userId = req.user.userId;

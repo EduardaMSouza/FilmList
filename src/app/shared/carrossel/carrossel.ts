@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, OnInit, HostListener } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-carrossel',
@@ -8,11 +9,34 @@ import { Component, Input, ViewChild, ElementRef } from '@angular/core';
   templateUrl: './carrossel.html',
   styleUrls: ['./carrossel.scss']
 })
-export class CarrosselComponent {
+export class CarrosselComponent implements OnInit {
   @Input() titulo: string = '';
   @Input() filmes: any[] = [];
   pageIndex: number = 0;
-  readonly pageSize: number = 10;
+  pageSize: number = 10;
+
+  constructor(private router: Router) {}
+
+  ngOnInit() {
+    this.setPageSize();
+  }
+
+  @HostListener('window:resize')
+  onResize() {
+    this.setPageSize();
+  }
+
+  setPageSize() {
+    const width = window.innerWidth;
+    if (width < 640) { // mobile
+      this.pageSize = 2;
+    } else if (width < 1024) { // tablet
+      this.pageSize = 5;
+    } else { // desktop
+      this.pageSize = 10;
+    }
+    this.pageIndex = 0;
+  }
 
   get pagedFilmes() {
     const start = this.pageIndex * this.pageSize;
@@ -36,6 +60,12 @@ export class CarrosselComponent {
   scrollRight() {
     if (this.canScrollRight) {
       this.pageIndex++;
+    }
+  }
+
+  navegarParaFilme(filme: any) {
+    if (filme && filme.id) {
+      this.router.navigate(['/filme', filme.id]);
     }
   }
 } 

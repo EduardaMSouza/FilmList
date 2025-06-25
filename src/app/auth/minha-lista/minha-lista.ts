@@ -31,6 +31,9 @@ export class MinhaLista implements OnInit {
   modoRemocao = false;
   filmesSelecionados: Set<number> = new Set();
 
+  paginaAtual: number = 1;
+  tamanhoPagina: number = 8;
+
   constructor(
     private filmeService: FilmeService,
     private userMovieService: UserMovieService,
@@ -105,24 +108,14 @@ export class MinhaLista implements OnInit {
   aplicarFiltros() {
     this.filmesFiltrados = this.todosFilmes.filter(filme => {
       const nenhumFiltroAtivo = !this.filtros.assistido && !this.filtros.praAssistir && !this.filtros.jaAssistido;
-      
-      if (nenhumFiltroAtivo) {
-        return true;
-      }
-      
-      if (this.filtros.assistido && filme.status === 'assistindo') {
-        return true;
-      }
-      if (this.filtros.praAssistir && (filme.status === 'pra-assistir' || filme.status === '')) {
-        return true;
-      }
-      if (this.filtros.jaAssistido && filme.status === 'ja-assisti') {
-        return true;
-      }
-      
+      if (nenhumFiltroAtivo) return true;
+      if (this.filtros.assistido && filme.status === 'assistindo') return true;
+      if (this.filtros.praAssistir && (filme.status === 'pra-assistir' || filme.status === '')) return true;
+      if (this.filtros.jaAssistido && filme.status === 'ja-assisti') return true;
       return false;
     });
     this.filtrarFilmes();
+    this.paginaAtual = 1;
   }
 
   toggleFiltro(tipo: 'assistido' | 'praAssistir' | 'jaAssistido') {
@@ -145,11 +138,13 @@ export class MinhaLista implements OnInit {
     const termo = this.busca.trim().toLowerCase();
     if (!termo) {
       this.filmes = [...this.filmesFiltrados];
+      this.paginaAtual = 1;
       return;
     }
     this.filmes = this.filmesFiltrados.filter(filme =>
       filme.title.toLowerCase().includes(termo)
     );
+    this.paginaAtual = 1;
   }
 
   getStatusText(status: string): string {
@@ -181,4 +176,44 @@ export class MinhaLista implements OnInit {
         return 'status-sem-status';
     }
   }
+
+  get filmesPaginados(): any[] {
+    const inicio = (this.paginaAtual - 1) * this.tamanhoPagina;
+    const fim = inicio + this.tamanhoPagina;
+    return this.filmes.slice(inicio, fim);
+  }
+
+  get totalPaginas(): number {
+    return Math.ceil(this.filmes.length / this.tamanhoPagina) || 1;
+  }
+
+  proximaPagina() {
+    if (this.paginaAtual < this.totalPaginas) {
+      this.paginaAtual++;
+    }
+  }
+
+  paginaAnterior() {
+    if (this.paginaAtual > 1) {
+      this.paginaAtual--;
+    }
+  }
+
+  irParaPagina(pagina: number) {
+    if (pagina >= 1 && pagina <= this.totalPaginas) {
+      this.paginaAtual = pagina;
+    }
+  }
+
+  paginasExibidas(): number[] {
+  const paginas: number[] = [];
+  const inicio = Math.max(1, this.paginaAtual - 2);
+  const fim = Math.min(this.totalPaginas, this.paginaAtual + 2);
+
+  for (let i = inicio; i <= fim; i++) {
+    paginas.push(i);
+  }
+  return paginas;
+  }
+
 }

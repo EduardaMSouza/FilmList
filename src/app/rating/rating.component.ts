@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { UserMovieService } from '../services/user-movie.service';
 
 @Component({
@@ -16,12 +16,28 @@ export class RatingComponent implements OnInit {
   @Input() userRatingFromBackend: number | null = null;
   @Input() movieId!: number;
 
+  @Output() refreshMovie = new EventEmitter<void>();
+
   userRating: number | null = null;
   hoverRating: number | null = null;
   watchStatus: string = '';
   userMovieId: number | null = null;
 
   constructor(private userMovieService: UserMovieService) {}
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['status'] && changes['status'].currentValue !== undefined) {
+      this.watchStatus = changes['status'].currentValue;
+    }
+
+    if (changes['userRatingFromBackend'] && changes['userRatingFromBackend'].currentValue !== undefined) {
+      this.userRating = changes['userRatingFromBackend'].currentValue;
+    }
+
+    if (changes['movieId'] && changes['movieId'].currentValue !== undefined) {
+      this.loadUserMovieId();
+    }
+  }
 
   ngOnInit(): void {
     this.watchStatus = this.status;

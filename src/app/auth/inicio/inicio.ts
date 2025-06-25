@@ -15,6 +15,10 @@ export class Inicio implements OnInit, OnDestroy {
   filmes: any[] = [];
   filmesContinuarAssistindo: any[] = [];
   filmesMelhorAvaliados: any[] = [];
+  filmesAventura: any[] = [];
+  filmesTerror: any[] = [];
+  filmesComedia: any[] = [];
+  filmesDrama: any[] = [];
 
   banners = [
     {
@@ -57,6 +61,10 @@ export class Inicio implements OnInit, OnDestroy {
     this.filmeService.getFilmesMinhaLista('assistindo').subscribe((data: any[]) => {
       this.filmesContinuarAssistindo = data;
     });
+    this.filmeService.getFilmesPorGenero('Aventura').subscribe(filmes => this.filmesAventura = filmes.slice(0, 20));
+    this.filmeService.getFilmesPorGenero('Terror').subscribe(filmes => this.filmesTerror = filmes.slice(0, 20));
+    this.filmeService.getFilmesPorGenero('Comédia').subscribe(filmes => this.filmesComedia = filmes.slice(0, 20));
+    this.filmeService.getFilmesPorGenero('Drama').subscribe(filmes => this.filmesDrama = filmes.slice(0, 20));
     this.iniciarTimerBanners();
     console.log(this.filmesContinuarAssistindo)
   }

@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, SimpleChanges } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { FilmeService } from '../../services/filme.service';
 import { CommonModule } from '@angular/common';
@@ -40,6 +40,7 @@ export class FilmeDetalheComponent implements OnInit {
 
   userStatus: string = '';
   userRating: number | null = null;
+  watchStatus: string = '';
 
   filmes: FilmeBase[] = [];
 
@@ -54,8 +55,18 @@ export class FilmeDetalheComponent implements OnInit {
   ngOnInit(): void {
     this.filmeId = Number(this.route.snapshot.paramMap.get('id'));
     this.buscarFilme();
-    this.buscarUserMovieData();
     this.buscarFilmesRecomendados();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['status']) {
+      this.watchStatus = changes['status'].currentValue;
+    }
+
+    if (changes['userRatingFromBackend']) {
+      this.userRating = changes['userRatingFromBackend'].currentValue;
+    }
+    
   }
 
   get headers(): HttpHeaders {
@@ -68,9 +79,11 @@ export class FilmeDetalheComponent implements OnInit {
 
   buscarFilme(): void {
     this.filmeService.getFilmePorId(this.filmeId).subscribe({
-      next: (data: FilmeDetalhe) => {
+      next: (data: any) => {
         this.filme = data;
         this.cast = data.cast;
+        this.userStatus = data.userStatus || '';
+        this.userRating = data.userRating ?? null;
         this.carregando = false;
       },
       error: () => {
@@ -80,28 +93,8 @@ export class FilmeDetalheComponent implements OnInit {
     });
   }
 
-  buscarUserMovieData(): void {
-    this.http
-      .get<any>(`http://localhost:3000/userMovies/${this.filmeId}`, { headers: this.headers })
-      .subscribe({
-        next: (userMovie) => {
-          this.userStatus = userMovie.status;
-          this.userRating = userMovie.rating;
-        },
-        error: (err) => {
-          if (err.status === 404) {
-            this.userStatus = '';
-            this.userRating = null;
-          } else {
-            console.error('Erro ao buscar status/nota do usuário:', err);
-          }
-        },
-      });
-  }
-
   buscarFilmesRecomendados(): void {
     this.filmeService.getFilmesComNotas().subscribe((data: FilmeBase[]) => {
-      // Exemplo: pega os 10 mais bem avaliados, excluindo o atual
       this.filmes = data
         .filter(f => f.id !== this.filmeId)
         .sort((a, b) => (b.rating || 0) - (a.rating || 0))
