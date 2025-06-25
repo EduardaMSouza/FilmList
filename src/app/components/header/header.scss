@@ -77,9 +77,19 @@
   }
 }
 
-.search-bar-global {
+.header-container {
   position: relative;
-  max-width: 400px;
+}
+
+.search-bar-global {
+  position: absolute;
+  top: 8px;
+  right: 24px;
+  max-width: 260px;
+  width: 100%;
+  z-index: 20;
+  display: flex;
+  align-items: center;
   .loupe-global {
     position: absolute;
     left: 12px;
@@ -104,6 +114,25 @@
       outline: none;
       background: rgba(255, 255, 255, 0.2);
     }
+  }
+}
+
+@media (max-width: 900px) {
+  .search-bar-global {
+    right: 8px;
+    top: 8px;
+    max-width: 180px;
+  }
+}
+
+@media (max-width: 600px) {
+  .search-bar-global {
+    position: static;
+    margin: 12px auto 0 auto;
+    display: flex;
+    justify-content: center;
+    width: 90%;
+    max-width: 100%;
   }
 }
 
