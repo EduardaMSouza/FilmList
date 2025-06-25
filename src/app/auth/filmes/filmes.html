@@ -99,13 +99,13 @@
         class="card-filme"
         [class.card-filme-adicao]="modoAdicao"
         [class.card-filme-selecionado]="isFilmeSelecionado(filme)"
-        *ngFor="let filme of filmes; let i = index"
+        *ngFor="let filme of filmesPaginados; let i = index"
         (click)="modoAdicao && toggleSelecaoFilme(filme, $event)"
         [routerLink]="!modoAdicao ? ['/filme', filme.id] : null"
       >
         <img [src]="filme.poster_url" [alt]="filme.title" />
         <div class="info-filme">
-          <strong>{{ i + 1 }}. {{ filme.title }}</strong><br />
+          <strong>{{ (paginaAtual - 1) * tamanhoPagina + i + 1 }}. {{ filme.title }}</strong><br />
           <span class="data-filme">{{ filme.release_date }}</span><br />
           <span class="genero-filme">{{ filme.genre_names?.join(', ') || 'Gênero não informado' }}</span><br />
           Sinopse: {{ filme.overview | slice:0:100 }}...
@@ -117,6 +117,26 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="paginacao">
+      <button (click)="paginaAnterior()" [disabled]="paginaAtual === 1">«</button>
+
+      <button *ngIf="paginaAtual > 3" (click)="irParaPagina(1)">1</button>
+      <span *ngIf="paginaAtual > 4">...</span>
+
+      <button
+        *ngFor="let pagina of paginasExibidas()"
+        (click)="irParaPagina(pagina)"
+        [class.ativa]="pagina === paginaAtual">
+        {{ pagina }}
+      </button>
+
+      <span *ngIf="paginaAtual < totalPaginas - 3">...</span>
+      <button *ngIf="paginaAtual < totalPaginas - 2" (click)="irParaPagina(totalPaginas)">
+        {{ totalPaginas }}
+      </button>
+
+      <button (click)="proximaPagina()" [disabled]="paginaAtual === totalPaginas">»</button>
     </div>
     <div class="sem-filmes" *ngIf="filmes.length === 0">
       <div class="mensagem-sem-filmes">

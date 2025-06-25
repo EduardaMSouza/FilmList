@@ -48,6 +48,9 @@ export class Filmes implements OnInit {
   modoAdicao = false;
   filmesSelecionados: Set<number> = new Set();
 
+  paginaAtual: number = 1;
+  tamanhoPagina: number = 8;
+
   constructor(
     private filmeService: FilmeService,
     private userMovieService: UserMovieService,
@@ -166,11 +169,13 @@ export class Filmes implements OnInit {
     const termo = this.busca.trim().toLowerCase();
     if (!termo) {
       this.filmes = [...this.filmesFiltrados];
+      this.paginaAtual = 1;
       return;
     }
     this.filmes = this.filmesFiltrados.filter(filme =>
       filme.title.toLowerCase().includes(termo)
     );
+    this.paginaAtual = 1;
   }
 
   ajustarAnoMin() {
@@ -190,5 +195,51 @@ export class Filmes implements OnInit {
   onBuscaChange(valor: string) {
     this.busca = valor;
     this.filtrarFilmes();
+  }
+
+  get filmesPaginados(): any[] {
+    const inicio = (this.paginaAtual - 1) * this.tamanhoPagina;
+    const fim = inicio + this.tamanhoPagina;
+    return this.filmes.slice(inicio, fim);
+  }
+
+  get totalPaginas(): number {
+    return Math.ceil(this.filmes.length / this.tamanhoPagina) || 1;
+  }
+
+  proximaPagina() {
+    if (this.paginaAtual < this.totalPaginas) {
+      this.paginaAtual++;
+    }
+  }
+
+  paginaAnterior() {
+    if (this.paginaAtual > 1) {
+      this.paginaAtual--;
+    }
+  }
+
+  irParaPagina(pagina: number) {
+    this.paginaAtual = pagina;
+  }
+
+  paginasExibidas(): number[] {
+    const total = this.totalPaginas;
+    const atual = this.paginaAtual;
+    const paginas: number[] = [];
+    if (total <= 7) {
+      for (let i = 1; i <= total; i++) paginas.push(i);
+    } else {
+      if (atual <= 4) {
+        for (let i = 1; i <= 5; i++) paginas.push(i);
+        paginas.push(total - 1, total);
+      } else if (atual >= total - 3) {
+        paginas.push(1, 2);
+        for (let i = total - 4; i <= total; i++) paginas.push(i);
+      } else {
+        paginas.push(1, 2, atual - 1, atual, atual + 1, total - 1, total);
+      }
+    }
+    return Array.from(new Set(paginas)).filter(p => p >= 1 && p <= total);
   }
 }
