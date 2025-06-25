@@ -1,18 +1,20 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { RouterLink, Router } from '@angular/router';
-import { NgFor, NgClass } from '@angular/common';
+import { NgFor, NgClass, CommonModule } from '@angular/common';
 import { FilmeService } from '../../services/filme.service';
 import { CarrosselComponent } from '../../shared/carrossel/carrossel';
 
 @Component({
   selector: 'app-inicio',
-  imports: [RouterLink, NgFor, NgClass, CarrosselComponent],
+  imports: [RouterLink, NgFor, NgClass, CarrosselComponent, CommonModule],
   templateUrl: './inicio.html',
   styleUrl: './inicio.scss',
   standalone: true
 })
 export class Inicio implements OnInit, OnDestroy {
   filmes: any[] = [];
+  filmesContinuarAssistindo: any[] = [];
+  filmesMelhorAvaliados: any[] = [];
 
   banners = [
     {
@@ -50,8 +52,13 @@ export class Inicio implements OnInit, OnDestroy {
   ngOnInit() {
     this.filmeService.getFilmesComNotas().subscribe((data: any[]) => {
       this.filmes = data;
+      this.filmesMelhorAvaliados = [...data].sort((a, b) => (b.rating || 0) - (a.rating || 0)).slice(0, 20);
+    });
+    this.filmeService.getFilmesMinhaLista('assistindo').subscribe((data: any[]) => {
+      this.filmesContinuarAssistindo = data;
     });
     this.iniciarTimerBanners();
+    console.log(this.filmesContinuarAssistindo)
   }
 
   ngOnDestroy() {
@@ -75,10 +82,6 @@ export class Inicio implements OnInit, OnDestroy {
   reiniciarTimerBanners() {
     this.pararTimerBanners();
     this.iniciarTimerBanners();
-  }
-
-  get filmesMelhorAvaliados() {
-    return [...this.filmes].sort((a, b) => (b.rating || 0) - (a.rating || 0));
   }
 
   bannerAnterior() {

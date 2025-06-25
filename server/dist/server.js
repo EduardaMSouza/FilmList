@@ -130,7 +130,10 @@ server.get('/movies/:id', (req, res) => {
 server.get('/userMovies', (req, res) => {
     const userId = req.user.userId;
     const db = JSON.parse(fs_1.default.readFileSync(path_1.default.join(__dirname, '../db.json'), 'utf-8'));
-    const userMovies = db.userMovies.filter((um) => um.userId === userId);
+    let userMovies = db.userMovies.filter((um) => um.userId === userId);
+    if (req.query.status) {
+        userMovies = userMovies.filter((um) => um.status === req.query.status);
+    }
     const response = userMovies.map((userMovie) => {
         const movie = db.movies.find((m) => m.id === userMovie.movieId);
         return Object.assign(Object.assign({}, userMovie), { movie: movie || null });

@@ -8867,28 +8867,28 @@
       "id": 575702,
       "userId": 7,
       "movieId": 1118031,
-      "status": "ja-assisti",
+      "status": "assistindo",
       "rating": 7
     },
     {
       "id": 575703,
       "userId": 7,
       "movieId": 974950,
-      "status": "ja-assisti",
+      "status": "assistindo",
       "rating": 8
     },
     {
       "id": 575704,
       "userId": 7,
       "movieId": 588648,
-      "status": "quero-assistir",
+      "status": "assistindo",
       "rating": null
     },
     {
       "id": 575705,
       "userId": 7,
       "movieId": 1136867,
-      "status": "quero-assistir",
+      "status": "assistindo",
       "rating": null
     },
     {

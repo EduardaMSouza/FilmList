@@ -29,7 +29,7 @@ export class FilmeService {
     return this.http.get<any>(`${this.apiUrl}/${id}`);
   }
    getFilmesComNotas(): Observable<Filme[]> {
-    const filmes$ = this.http.get<any>(`http://localhost:3000/movies?limit=20`);
+    const filmes$ = this.http.get<any>(`http://localhost:3000/movies?limit=400`);
     const ratings$ = this.http.get<any[]>(`http://localhost:3000/ratings`);
     
     return forkJoin([filmes$, ratings$]).pipe(
@@ -50,8 +50,12 @@ export class FilmeService {
     );
   }
 
-  getFilmesMinhaLista(): Observable<any[]> {
-    return this.http.get<any[]>(`http://localhost:3000/userMovies`, { headers: this.headers }).pipe(
+  getFilmesMinhaLista(status?: string): Observable<any[]> {
+    let url = `http://localhost:3000/userMovies`;
+    if (status) {
+      url += `?status=${encodeURIComponent(status)}`;
+    }
+    return this.http.get<any[]>(url, { headers: this.headers }).pipe(
       map(userMovies => {
         return userMovies.map(userMovie => {
           if (!userMovie.movie) {

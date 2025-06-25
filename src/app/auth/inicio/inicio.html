@@ -36,8 +36,8 @@
   <input type="text" class="menu-search" placeholder="Buscar...">
 </nav>
 
-<div class="w-full flex justify-center my-8">
-  <app-carrossel [titulo]="'Continuar assistindo'" [filmes]="filmes"></app-carrossel>
+<div *ngIf="filmesContinuarAssistindo.length > 0" class="w-full flex justify-center my-8">
+  <app-carrossel [titulo]="'Continuar assistindo'" [filmes]="filmesContinuarAssistindo"></app-carrossel>
 </div>
 <div class="w-full flex justify-center my-8">
   <app-carrossel [titulo]="'Filmes'" [filmes]="filmes"></app-carrossel>
