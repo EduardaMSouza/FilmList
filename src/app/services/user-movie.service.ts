@@ -29,4 +29,8 @@ export class UserMovieService {
   createUserMovie(body: any): Observable<any> {
     return this.http.post<any>(this.apiUrl, body, { headers: this.headers });
   }
+
+  deleteUserMovie(id: number): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`, { headers: this.headers });
+  }
 }

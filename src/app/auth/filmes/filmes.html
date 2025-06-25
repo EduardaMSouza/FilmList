@@ -1,0 +1,164 @@
+<header class="filmes-header">
+  <nav class="menu-navegacao">
+    <a [routerLink]="['/inicio']" class="menu-item hide-mobile">Início</a>
+    <a [routerLink]="['/filmes']" class="menu-item">Filmes</a>
+    <a [routerLink]="['/mais-votados']" class="menu-item hide-mobile">Mais votados</a>
+    <a [routerLink]="['/minha-lista']" class="menu-item hide-mobile">Minha Lista</a>
+    <button class="menu-hamburguer" (click)="menuAberto = !menuAberto">&#9776;</button>
+  </nav>
+  <div class="search-bar-global">
+    <img
+      src="/loupe.png"
+      alt="Lupa"
+      class="loupe-global"
+    />
+    <input
+      type="text"
+      class="search-input-global"
+      placeholder="Buscar filmes..."
+      [(ngModel)]="busca"
+      (input)="filtrarFilmes()"
+    />
+  </div>
+  <div class="menu-mobile" *ngIf="menuAberto">
+    <a [routerLink]="['/inicio']" (click)="menuAberto = false">Início</a>
+    <a [routerLink]="['/filmes']" (click)="menuAberto = false">Filmes</a>
+    <a [routerLink]="['/mais-votados']" (click)="menuAberto = false">Mais votados</a>
+    <a [routerLink]="['/minha-lista']" (click)="menuAberto = false">Minha Lista</a>
+  </div>
+</header>
+
+<div class="filmes-container">
+  <div class="sidebar-filtros">
+    <h1>Filmes</h1>
+    <hr />
+    <h2>Filtros</h2>
+    <hr />
+    
+    <div>
+      <div class="filtro-titulo">Data de lançamento</div>
+      <div class="slider-ano-wrapper">
+        <nouislider
+          [connect]="true"
+          [min]="anoMin"
+          [max]="anoMax"
+          [step]="1"
+          [(ngModel)]="anosSelecionados"
+          (change)="aplicarFiltros()"
+        ></nouislider>
+        <span class="ano-label ano-label-esquerda">{{ anosSelecionados[0] }}</span>
+        <span class="ano-label ano-label-direita">{{ anosSelecionados[1] }}</span>
+      </div>
+    </div>
+    <hr />
+
+    <!-- Gêneros -->
+    <div>
+      <div class="filtro-titulo">Gêneros</div>
+      <div class="filtro-opcoes">
+        <label *ngFor="let genero of generosVisiveis">
+          <input
+            type="checkbox"
+            [checked]="filtros.generos[genero]"
+            (change)="toggleGenero(genero)"
+          />
+          {{ genero }}
+        </label>
+        <div *ngIf="!mostrarTodosGeneros" class="mostrar-mais" (click)="mostrarTodosGeneros = true">
+          + Mostrar mais
+        </div>
+        <div *ngIf="mostrarTodosGeneros">
+          <label *ngFor="let genero of generosOcultos">
+            <input
+              type="checkbox"
+              [checked]="filtros.generos[genero]"
+              (change)="toggleGenero(genero)"
+            />
+            {{ genero }}
+          </label>
+          <div class="mostrar-mais" (click)="mostrarTodosGeneros = false">
+            - Mostrar menos
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <button 
+      class="btn-limpar-filtros" 
+      (click)="limparFiltros()"
+      *ngIf="temFiltrosAtivos()"
+    >
+      Limpar Filtros
+    </button>
+    
+    <!-- Botão de Adicionar à Lista -->
+    <div class="adicionar-filmes-section">
+      <hr class="hr-secundario" />
+      <button 
+        class="btn-adicionar-filmes"
+        [class.btn-adicionar-ativo]="modoAdicao"
+        (click)="toggleModoAdicao()"
+      >
+        {{ modoAdicao ? 'Cancelar Seleção' : 'Adicionar à Lista' }}
+      </button>
+      
+      <!-- Botões de ação quando em modo de adição -->
+      <div class="acoes-adicao" *ngIf="modoAdicao">
+        <button 
+          class="btn-confirmar-adicao"
+          (click)="adicionarFilmesSelecionados()"
+          [disabled]="filmesSelecionados.size === 0"
+        >
+          Adicionar Selecionados ({{ filmesSelecionados.size }})
+        </button>
+        <button 
+          class="btn-cancelar-adicao"
+          (click)="cancelarAdicao()"
+        >
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="conteudo-filmes">
+    <div class="grid-filmes" *ngIf="filmes.length > 0">
+      <div
+        class="card-filme"
+        [class.card-filme-adicao]="modoAdicao"
+        [class.card-filme-selecionado]="isFilmeSelecionado(filme)"
+        *ngFor="let filme of filmes; let i = index"
+        (click)="modoAdicao && toggleSelecaoFilme(filme, $event)"
+        [routerLink]="!modoAdicao ? ['/filme', filme.id] : null"
+      >
+        <img [src]="filme.poster_url" [alt]="filme.title" />
+        <div class="info-filme">
+          <strong>{{ i + 1 }}. {{ filme.title }}</strong><br />
+          <span class="data-filme">{{ filme.release_date }}</span><br />
+          <span class="genero-filme">{{ filme.genre_names?.join(', ') || 'Gênero não informado' }}</span><br />
+          Sinopse: {{ filme.overview | slice:0:100 }}...
+        </div>
+        <!-- Overlay de seleção -->
+        <div class="overlay-selecao" *ngIf="modoAdicao">
+          <div class="checkbox-selecao" [class.checked]="isFilmeSelecionado(filme)">
+            <span *ngIf="isFilmeSelecionado(filme)">✓</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="sem-filmes" *ngIf="filmes.length === 0">
+      <div class="mensagem-sem-filmes">
+        <h3>Nenhum filme encontrado</h3>
+        <p *ngIf="temFiltrosAtivos()">
+          Tente ajustar os filtros para encontrar mais filmes.
+        </p>
+        <p *ngIf="!temFiltrosAtivos() && busca">
+          Nenhum filme encontrado com o termo "{{ busca }}".
+        </p>
+        <p *ngIf="!temFiltrosAtivos() && !busca">
+          Carregando filmes...
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

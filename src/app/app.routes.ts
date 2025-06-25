@@ -4,6 +4,7 @@ import { Cadastro } from './auth/cadastro/cadastro.component';
 import { Inicio } from './auth/inicio/inicio';
 import { FilmeDetalheComponent } from './pages/filme-detalhes/filme-detalhe';
 import { MinhaLista } from './auth/minha-lista/minha-lista';
+import { Filmes } from './auth/filmes/filmes';
 
 export const routes: Routes = [
   { path: 'auth/login', component: Login },
@@ -11,7 +12,8 @@ export const routes: Routes = [
   { path: 'auth/inicio', component: Inicio },
   { path: 'minha-lista', component: MinhaLista },
   { path: 'inicio', component: Inicio },
+  { path: 'filmes', component: Filmes },
   { path: 'filme/:id', component: FilmeDetalheComponent },
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },  
-  { path: '**', redirectTo: 'auth/login', pathMatch: 'full' }
+  { path: '**', redirectTo: 'auth/login', pathMatch: 'full' },
 ];

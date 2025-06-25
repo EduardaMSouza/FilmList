@@ -15,3 +15,68 @@ html, body {
     density: 0
   ));
 }
+
+.noUi-handle {
+  border-radius: 50% !important;
+  width: 28px !important;
+  height: 28px !important;
+  top: -7px !important;
+  background: #fff !important;
+  border: 2px solid #ccc !important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15) !important;
+}
+
+.anos-slider-labels {
+  position: relative;
+  height: 0;
+}
+
+.ano-label {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-weight: bold;
+  font-size: 14px;
+  min-width: 32px;
+  text-align: center;
+  z-index: 2;
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+}
+
+.ano-label-esquerda {
+  left: -60px;
+}
+
+.ano-label-direita {
+  right: -60px;
+}
+
+.slider-ano-wrapper {
+  width: 140px;
+  margin: 0 auto;
+  position: relative;
+  min-width: unset;
+}
+
+.mostrar-mais {
+  display: inline-block;
+  color: #1976d2;
+  font-weight: 500;
+  background: #f3f6fb;
+  border-radius: 16px;
+  padding: 4px 14px;
+  margin-top: 8px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 4px rgba(25, 118, 210, 0.08);
+  user-select: none;
+}
+
+.mostrar-mais:hover {
+  background: #e3edfa;
+  color: #0d47a1;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.15);
+}

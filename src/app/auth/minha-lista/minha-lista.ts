@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FilmeService } from '../../services/filme.service';
+import { UserMovieService } from '../../services/user-movie.service';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
 import { CarrosselComponent } from '../../shared/carrossel/carrossel';
 import { FormsModule } from '@angular/forms';
 
@@ -26,8 +27,15 @@ export class MinhaLista implements OnInit {
   };
 
   menuAberto = false;
+  
+  modoRemocao = false;
+  filmesSelecionados: Set<number> = new Set();
 
-  constructor(private filmeService: FilmeService) {}
+  constructor(
+    private filmeService: FilmeService,
+    private userMovieService: UserMovieService,
+    private router: Router
+  ) {}
 
   ngOnInit() {
     this.filmeService.getFilmesMinhaLista().subscribe(filmes => {
@@ -36,6 +44,62 @@ export class MinhaLista implements OnInit {
       this.filmesFiltrados = [...this.todosFilmes];
       console.log('Filmes da minha lista:', this.todosFilmes);
     });
+  }
+
+  navegarParaDetalhes(filmeId: number) {
+    this.router.navigate(['/filme', filmeId]);
+  }
+
+  toggleModoRemocao() {
+    this.modoRemocao = !this.modoRemocao;
+    if (!this.modoRemocao) {
+      this.filmesSelecionados.clear();
+    }
+  }
+
+  toggleSelecaoFilme(filme: any, event: Event) {
+    if (!this.modoRemocao) return;
+    
+    event.preventDefault();
+    event.stopPropagation();
+    
+    const userMovieId = filme.userMovieId;
+    if (this.filmesSelecionados.has(userMovieId)) {
+      this.filmesSelecionados.delete(userMovieId);
+    } else {
+      this.filmesSelecionados.add(userMovieId);
+    }
+  }
+
+  isFilmeSelecionado(filme: any): boolean {
+    return this.filmesSelecionados.has(filme.userMovieId);
+  }
+
+  removerFilmesSelecionados() {
+    if (this.filmesSelecionados.size === 0) return;
+
+    const promises = Array.from(this.filmesSelecionados).map(filmeId => {
+      return this.userMovieService.deleteUserMovie(filmeId).toPromise();
+    });
+
+    Promise.all(promises).then(() => {
+      this.filmeService.getFilmesMinhaLista().subscribe(filmes => {
+        this.todosFilmes = filmes;
+        this.filmes = [...this.todosFilmes];
+        this.filmesFiltrados = [...this.todosFilmes];
+        this.aplicarFiltros();
+      });
+      
+      this.filmesSelecionados.clear();
+      this.modoRemocao = false;
+    }).catch(error => {
+      console.error('Erro ao remover filmes:', error);
+    });
+  }
+
+  cancelarRemocao() {
+    this.filmesSelecionados.clear();
+    this.modoRemocao = false;
   }
 
   aplicarFiltros() {

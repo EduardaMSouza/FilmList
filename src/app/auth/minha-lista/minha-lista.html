@@ -70,13 +70,44 @@
     >
       Limpar Filtros
     </button>
+    
+    <div class="remover-filmes-section">
+      <hr class="hr-secundario" />
+      <button 
+        class="btn-remover-filmes"
+        [class.btn-remover-ativo]="modoRemocao"
+        (click)="toggleModoRemocao()"
+      >
+        {{ modoRemocao ? 'Cancelar Remoção' : 'Remover Filmes' }}
+      </button>
+      
+
+      <div class="acoes-remocao" *ngIf="modoRemocao">
+        <button 
+          class="btn-confirmar-remocao"
+          (click)="removerFilmesSelecionados()"
+          [disabled]="filmesSelecionados.size === 0"
+        >
+          Remover Selecionados ({{ filmesSelecionados.size }})
+        </button>
+        <button 
+          class="btn-cancelar-remocao"
+          (click)="cancelarRemocao()"
+        >
+          Cancelar
+        </button>
+      </div>
+    </div>
   </div>
   <div class="conteudo-lista">
     <div class="grid-filmes" *ngIf="filmes.length > 0">
-      <a
+      <div
         class="card-filme"
+        [class.card-filme-remocao]="modoRemocao"
+        [class.card-filme-selecionado]="isFilmeSelecionado(filme)"
         *ngFor="let filme of filmes; let i = index"
-        [routerLink]="['/filme', filme.id]"
+        (click)="modoRemocao && toggleSelecaoFilme(filme, $event)"
+        [routerLink]="!modoRemocao ? ['/filme', filme.id] : null"
       >
         <img [src]="filme.poster_url" [alt]="filme.title" />
         <div class="info-filme">
@@ -84,7 +115,12 @@
           <span class="data-filme">{{ filme.release_date }}</span><br />
           Sinopse: {{ filme.overview | slice:0:100 }}...
         </div>
-      </a>
+        <div class="overlay-selecao" *ngIf="modoRemocao">
+          <div class="checkbox-selecao" [class.checked]="isFilmeSelecionado(filme)">
+            <span *ngIf="isFilmeSelecionado(filme)">✓</span>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="sem-filmes" *ngIf="filmes.length === 0">
       <div class="mensagem-sem-filmes">
