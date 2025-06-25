@@ -7,6 +7,7 @@ import { RatingComponent } from '../../rating/rating.component';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Filme as FilmeBase } from '../../services/filme.service';
 import { CarrosselComponent } from '../../shared/carrossel/carrossel';
+import { HeaderComponent } from '../../components/header/header';
 
 interface CastMember {  
   name: string;
@@ -29,7 +30,7 @@ interface FilmeDetalhe extends FilmeBase {
   selector: 'app-filme-detalhe',
   templateUrl: './filme-detalhe.html',
   styleUrls: ['./filme-detalhe.scss'],
-  imports: [CommonModule, Card, RatingComponent, CarrosselComponent],
+  imports: [HeaderComponent, CommonModule, Card, RatingComponent, CarrosselComponent],
 })
 export class FilmeDetalheComponent implements OnInit {
   filmeId!: number;

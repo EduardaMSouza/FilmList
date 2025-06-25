@@ -6,11 +6,12 @@ import { RouterModule, Router } from '@angular/router';
 import { CarrosselComponent } from '../../shared/carrossel/carrossel';
 import { FormsModule } from '@angular/forms';
 import { NouisliderModule } from 'ng2-nouislider';
+import { HeaderComponent } from '../../components/header/header';
 
 @Component({
   selector: 'app-filmes',
   standalone: true,
-  imports: [CommonModule, RouterModule, CarrosselComponent, FormsModule, NouisliderModule],
+  imports: [HeaderComponent, CommonModule, RouterModule, CarrosselComponent, FormsModule, NouisliderModule],
   templateUrl: './filmes.html',
   styleUrl: './filmes.scss'
 })
@@ -184,5 +185,10 @@ export class Filmes implements OnInit {
       this.anosSelecionados[1] = this.anosSelecionados[0];
     }
     this.aplicarFiltros();
+  }
+
+  onBuscaChange(valor: string) {
+    this.busca = valor;
+    this.filtrarFilmes();
   }
 }

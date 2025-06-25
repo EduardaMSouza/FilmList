@@ -3,10 +3,11 @@ import { RouterLink, Router } from '@angular/router';
 import { NgFor, NgClass, CommonModule } from '@angular/common';
 import { FilmeService } from '../../services/filme.service';
 import { CarrosselComponent } from '../../shared/carrossel/carrossel';
+import { HeaderComponent } from '../../components/header/header';
 
 @Component({
   selector: 'app-inicio',
-  imports: [RouterLink, NgFor, NgClass, CarrosselComponent, CommonModule],
+  imports: [HeaderComponent, RouterLink, NgFor, NgClass, CarrosselComponent, CommonModule],
   templateUrl: './inicio.html',
   styleUrl: './inicio.scss',
   standalone: true

@@ -1,0 +1,134 @@
+.minha-lista-header, .filmes-header {
+  background: #0D1B3F;
+  padding: 16px 32px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  @media (max-width: 768px) {
+    padding: 12px 16px;
+  }
+}
+
+.menu-navegacao {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  padding: 8px 40px 0 40px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  background: linear-gradient(to bottom, rgba(0,0,0,0.7) 80%, rgba(0,0,0,0));
+  font-family: 'Poppins', Arial, Helvetica, sans-serif;
+  flex-direction: row;
+  justify-content: flex-start;
+}
+
+.menu-item {
+  color: #fff;
+  font-weight: 600;
+  font-size: 1.15rem;
+  text-decoration: none;
+  transition: color 0.2s;
+  cursor: pointer;
+  letter-spacing: 0.5px;
+  font-family: 'Poppins', Arial, Helvetica, sans-serif;
+  margin-top: 2px;
+}
+
+.menu-item:hover {
+  color: #e50914;
+}
+
+.menu-hamburguer {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+@media (max-width: 767px) {
+  .menu-navegacao {
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 4px !important;
+    padding: 8px 0 0 0 !important;
+    overflow-x: auto !important;
+  }
+  .menu-navegacao > .menu-item,
+  .menu-navegacao a.menu-item {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    width: auto !important;
+    font-size: 0.9rem !important;
+    margin-top: 2px !important;
+    white-space: nowrap !important;
+    min-width: 60px !important;
+  }
+  nav.menu-navegacao .hide-mobile {
+    display: none !important;
+  }
+}
+
+.search-bar-global {
+  position: relative;
+  max-width: 400px;
+  .loupe-global {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 16px;
+    height: 16px;
+    opacity: 0.6;
+  }
+  .search-input-global {
+    width: 100%;
+    padding: 12px 12px 12px 40px;
+    border: none;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    font-size: 1rem;
+    &::placeholder {
+      color: rgba(255, 255, 255, 0.7);
+    }
+    &:focus {
+      outline: none;
+      background: rgba(255, 255, 255, 0.2);
+    }
+  }
+}
+
+.menu-mobile {
+  display: none;
+  flex-direction: column;
+  background: #0D1B3F;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 16px;
+  @media (max-width: 768px) {
+    display: flex;
+  }
+  a {
+    color: white;
+    text-decoration: none;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    &:last-child {
+      border-bottom: none;
+    }
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      margin: 0 -16px;
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
+}

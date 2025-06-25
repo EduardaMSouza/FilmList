@@ -5,11 +5,12 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { CarrosselComponent } from '../../shared/carrossel/carrossel';
 import { FormsModule } from '@angular/forms';
+import { HeaderComponent } from '../../components/header/header';
 
 @Component({
   selector: 'app-minha-lista',
   standalone: true,
-  imports: [CommonModule, RouterModule, CarrosselComponent, FormsModule],
+  imports: [HeaderComponent, CommonModule, RouterModule, CarrosselComponent, FormsModule],
   templateUrl: './minha-lista.html',
   styleUrl: './minha-lista.scss'
 })
@@ -214,6 +215,11 @@ export class MinhaLista implements OnInit {
     paginas.push(i);
   }
   return paginas;
+  }
+
+  onBuscaChange(valor: string) {
+    this.busca = valor;
+    this.filtrarFilmes();
   }
 
 }
