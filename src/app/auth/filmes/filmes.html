@@ -100,6 +100,21 @@
   </div>
 
   <div class="conteudo-filmes">
+    <div class="sem-filmes" *ngIf="filmes.length === 0">
+      <div class="mensagem-sem-filmes">
+        <h3>Nenhum filme encontrado</h3>
+        <p *ngIf="temFiltrosAtivos()">
+          Tente ajustar os filtros para encontrar mais filmes.
+        </p>
+        <p *ngIf="!temFiltrosAtivos() && busca">
+          Nenhum filme encontrado com o termo "{{ busca }}".
+        </p>
+        <p *ngIf="!temFiltrosAtivos() && !busca">
+          Carregando filmes...
+        </p>
+      </div>
+    </div>
+
     <div class="grid-filmes" *ngIf="filmes.length > 0">
       <div
         class="card-filme"
@@ -143,7 +158,8 @@
         </div>
       </div>
     </div>
-    <div class="paginacao">
+
+    <div class="paginacao" *ngIf="filmes.length > 0">
       <button (click)="paginaAnterior()" [disabled]="paginaAtual === 1">«</button>
 
       <button *ngIf="paginaAtual > 3" (click)="irParaPagina(1)">1</button>
@@ -162,20 +178,6 @@
       </button>
 
       <button (click)="proximaPagina()" [disabled]="paginaAtual === totalPaginas">»</button>
-    </div>
-    <div class="sem-filmes" *ngIf="filmes.length === 0">
-      <div class="mensagem-sem-filmes">
-        <h3>Nenhum filme encontrado</h3>
-        <p *ngIf="temFiltrosAtivos()">
-          Tente ajustar os filtros para encontrar mais filmes.
-        </p>
-        <p *ngIf="!temFiltrosAtivos() && busca">
-          Nenhum filme encontrado com o termo "{{ busca }}".
-        </p>
-        <p *ngIf="!temFiltrosAtivos() && !busca">
-          Carregando filmes...
-        </p>
-      </div>
     </div>
   </div>
 </div>

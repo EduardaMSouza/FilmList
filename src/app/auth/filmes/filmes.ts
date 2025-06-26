@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { NouisliderModule } from 'ng2-nouislider';
 import { HeaderComponent } from '../../components/header/header';
 import { MatSelectModule } from '@angular/material/select';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-filmes',
@@ -48,7 +49,7 @@ export class Filmes implements OnInit {
   filmesSelecionados: Set<number> = new Set();
 
   paginaAtual: number = 1;
-  tamanhoPagina: number = 8;
+  tamanhoPagina: number = 12;
 
   ordenacao: string = 'nota';
 
@@ -56,7 +57,8 @@ export class Filmes implements OnInit {
     private filmeService: FilmeService,
     private userMovieService: UserMovieService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private toastService: ToastService
   ) {}
 
   ngOnInit() {
@@ -118,11 +120,13 @@ export class Filmes implements OnInit {
     });
 
     Promise.all(promises).then(() => {
+      this.toastService.moviesAddedToList(this.filmesSelecionados.size);
       console.log('Filmes adicionados com sucesso!');
       this.filmesSelecionados.clear();
       this.modoAdicao = false;
     }).catch(error => {
       console.error('Erro ao adicionar filmes:', error);
+      this.toastService.genericError();
     });
   }
 

@@ -37,6 +37,7 @@
             "styles": [
               "@angular/material/prebuilt-themes/magenta-violet.css",
               "node_modules/nouislider/dist/nouislider.min.css",
+              "node_modules/ngx-toastr/toastr.css",
               "src/styles.scss"
             ]
           },

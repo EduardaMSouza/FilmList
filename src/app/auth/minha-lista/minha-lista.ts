@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from '../../components/header/header';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-minha-lista',
@@ -48,14 +49,15 @@ export class MinhaLista implements OnInit {
   filmesSelecionados: Set<number> = new Set();
 
   paginaAtual: number = 1;
-  tamanhoPagina: number = 8;
+  tamanhoPagina: number = 12;
 
   ordenacao: string = 'nota';
 
   constructor(
     private filmeService: FilmeService,
     private userMovieService: UserMovieService,
-    private router: Router
+    private router: Router,
+    private toastService: ToastService
   ) {}
 
   ngOnInit() {
@@ -105,6 +107,7 @@ export class MinhaLista implements OnInit {
     });
 
     Promise.all(promises).then(() => {
+      this.toastService.moviesRemovedFromList(this.filmesSelecionados.size);
       this.filmeService.getFilmesMinhaLista().subscribe(filmes => {
         this.todosFilmes = filmes;
         this.filmes = [...this.todosFilmes];
@@ -116,6 +119,7 @@ export class MinhaLista implements OnInit {
       this.modoRemocao = false;
     }).catch(error => {
       console.error('Erro ao remover filmes:', error);
+      this.toastService.genericError();
     });
   }
 
@@ -138,15 +142,12 @@ export class MinhaLista implements OnInit {
 
   aplicarFiltros() {
     this.filmesFiltrados = this.todosFilmes.filter(filme => {
-      // Filtro por status
       const generosAtivos = Object.keys(this.filtros.generos).filter(g => this.filtros.generos[g]);
       const nenhumFiltroStatus = !this.filtros.assistido && !this.filtros.praAssistir && !this.filtros.jaAssistido;
       const nenhumFiltroGenero = generosAtivos.length === 0;
       
-      // Se não há filtros ativos, mostra todos
       if (nenhumFiltroStatus && nenhumFiltroGenero) return true;
       
-      // Aplica filtro de status
       let passaFiltroStatus = nenhumFiltroStatus;
       if (!passaFiltroStatus) {
         if (this.filtros.assistido && filme.status === 'assistindo') passaFiltroStatus = true;
@@ -154,7 +155,6 @@ export class MinhaLista implements OnInit {
         if (this.filtros.jaAssistido && filme.status === 'ja-assisti') passaFiltroStatus = true;
       }
       
-      // Aplica filtro de gênero
       let passaFiltroGenero = nenhumFiltroGenero;
       if (!passaFiltroGenero) {
         if (filme.genre_names && Array.isArray(filme.genre_names)) {

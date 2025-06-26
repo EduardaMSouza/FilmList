@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-header',
@@ -18,7 +19,11 @@ export class HeaderComponent implements OnInit {
 
   @Output() buscaChange = new EventEmitter<string>();
 
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(
+    private router: Router, 
+    private route: ActivatedRoute,
+    private toastService: ToastService
+  ) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe(params => {
@@ -40,5 +45,11 @@ export class HeaderComponent implements OnInit {
   clearBusca() {
     this.busca = '';
     this.filtrarFilmes();
+  }
+
+  logout() {
+    localStorage.removeItem('token');
+    this.toastService.logoutSuccess();
+    this.router.navigate(['/auth/login']);
   }
 }

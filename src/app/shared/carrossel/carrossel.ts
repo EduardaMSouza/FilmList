@@ -32,11 +32,11 @@ export class CarrosselComponent implements OnInit, AfterViewInit {
 
   setPageSize() {
     const width = window.innerWidth;
-    if (width <= 600) { // mobile
+    if (width <= 600) { 
       this.pageSize = 1;
-    } else if (width <= 1024) { // tablet
+    } else if (width <= 1024) {
       this.pageSize = 4;
-    } else { // desktop
+    } else { 
       this.pageSize = 7;
     }
     this.pageIndex = 0;

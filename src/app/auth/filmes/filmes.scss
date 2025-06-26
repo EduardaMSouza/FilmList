@@ -305,7 +305,6 @@
   justify-items: center;
   justify-content: center;
   margin-top: 32px;
-  max-width: 900px;
   margin-left: auto;
   margin-right: auto;
   @media (max-width: 768px) {
@@ -455,7 +454,6 @@
   }
 }
 
-// Estilos do header e navegação
 .filmes-header {
   background: #0D1B3F;
   padding: 16px 32px;
@@ -638,16 +636,15 @@
   margin-top: 8px;
 }
 
-// Customização do ng2-nouislider
 .noUi-target {
-  background: #23272f !important; // cinza escuro
+  background: #23272f !important;
   border-radius: 8px;
   border: none;
   box-shadow: none;
 }
 
 .noUi-connect {
-  background: #444950 !important; // cinza mais claro
+  background: #444950 !important;
 }
 
 .noUi-handle {
@@ -804,6 +801,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-top: 24px;
   margin-bottom: 24px;
   width: 100%;
 }

@@ -67,6 +67,16 @@
       </div>
     </div>
     
+    <div class="ordenacao-wrapper">
+      <mat-form-field appearance="outline" class="ordenacao-mat-field">
+        <mat-label>Ordenar por</mat-label>
+        <mat-select [(ngModel)]="ordenacao" (selectionChange)="ordenarFilmes()">
+          <mat-option value="nota">Nota</mat-option>
+          <mat-option value="nome">Nome (A-Z)</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    
     <button 
       class="btn-limpar-filtros" 
       (click)="limparFiltros()"
@@ -104,15 +114,18 @@
     </div>
   </div>
   <div class="conteudo-lista">
-    <div class="ordenacao-wrapper">
-      <mat-form-field appearance="outline" class="ordenacao-mat-field">
-        <mat-label>Ordenar por</mat-label>
-        <mat-select [(ngModel)]="ordenacao" (selectionChange)="ordenarFilmes()">
-          <mat-option value="nota">Nota</mat-option>
-          <mat-option value="nome">Nome (A-Z)</mat-option>
-        </mat-select>
-      </mat-form-field>
+    <div class="sem-filmes" *ngIf="filmes.length === 0">
+      <div class="mensagem-sem-filmes">
+        <h3>Nenhum filme encontrado</h3>
+        <p *ngIf="temFiltrosAtivos()">
+          Tente ajustar os filtros ou adicionar mais filmes à sua lista.
+        </p>
+        <p *ngIf="!temFiltrosAtivos()">
+          Você ainda não tem filmes na sua lista. Que tal adicionar alguns?
+        </p>
+      </div>
     </div>
+
     <div class="grid-filmes" *ngIf="filmes.length > 0">
       <div
         class="card-filme"
@@ -152,9 +165,8 @@
         </div>
       </div>
     </div>
-    <div class="paginacao">
-      <button (click)="paginaAnterior()" [disabled]="paginaAtual === 1">«</button>
 
+    <div class="paginacao" *ngIf="filmes.length > 0">
       <button *ngIf="paginaAtual > 3" (click)="irParaPagina(1)">1</button>
       <span *ngIf="paginaAtual > 4">...</span>
 
@@ -169,20 +181,6 @@
       <button *ngIf="paginaAtual < totalPaginas - 2" (click)="irParaPagina(totalPaginas)">
         {{ totalPaginas }}
       </button>
-
-      <button (click)="proximaPagina()" [disabled]="paginaAtual === totalPaginas">»</button>
-    </div>
-
-    <div class="sem-filmes" *ngIf="filmes.length === 0">
-      <div class="mensagem-sem-filmes">
-        <h3>Nenhum filme encontrado</h3>
-        <p *ngIf="temFiltrosAtivos()">
-          Tente ajustar os filtros ou adicionar mais filmes à sua lista.
-        </p>
-        <p *ngIf="!temFiltrosAtivos()">
-          Você ainda não tem filmes na sua lista. Que tal adicionar alguns?
-        </p>
-      </div>
     </div>
   </div>
 </div>

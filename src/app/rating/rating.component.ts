@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
 import { UserMovieService } from '../services/user-movie.service';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-rating',
@@ -23,7 +24,10 @@ export class RatingComponent implements OnInit {
   watchStatus: string = '';
   userMovieId: number | null = null;
 
-  constructor(private userMovieService: UserMovieService) {}
+  constructor(
+    private userMovieService: UserMovieService,
+    private toastService: ToastService
+  ) {}
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['status'] && changes['status'].currentValue !== undefined) {
@@ -74,12 +78,26 @@ export class RatingComponent implements OnInit {
 
     if (this.userMovieId) {
       this.userMovieService.updateUserMovie(this.userMovieId, body).subscribe({
-        error: () => (this.userRating = previousRating),
+        next: () => {
+          this.toastService.ratingUpdated();
+          this.refreshMovie.emit();
+        },
+        error: () => {
+          this.userRating = previousRating;
+          this.toastService.genericError();
+        },
       });
     } else {
       this.userMovieService.createUserMovie(body).subscribe({
-        next: (res: any) => (this.userMovieId = res.id),
-        error: () => (this.userRating = previousRating),
+        next: (res: any) => {
+          this.userMovieId = res.id;
+          this.toastService.ratingUpdated();
+          this.refreshMovie.emit();
+        },
+        error: () => {
+          this.userRating = previousRating;
+          this.toastService.genericError();
+        },
       });
     }
   }
@@ -118,12 +136,26 @@ export class RatingComponent implements OnInit {
 
     if (this.userMovieId) {
       this.userMovieService.updateUserMovie(this.userMovieId, body).subscribe({
-        error: () => (this.watchStatus = previousStatus),
+        next: () => {
+          this.toastService.statusUpdated();
+          this.refreshMovie.emit();
+        },
+        error: () => {
+          this.watchStatus = previousStatus;
+          this.toastService.genericError();
+        },
       });
     } else {
       this.userMovieService.createUserMovie(body).subscribe({
-        next: (res: any) => (this.userMovieId = res.id),
-        error: () => (this.watchStatus = previousStatus),
+        next: (res: any) => {
+          this.userMovieId = res.id;
+          this.toastService.statusUpdated();
+          this.refreshMovie.emit();
+        },
+        error: () => {
+          this.watchStatus = previousStatus;
+          this.toastService.genericError();
+        },
       });
     }
   }

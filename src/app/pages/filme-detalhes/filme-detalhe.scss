@@ -2,6 +2,21 @@
   display: block;
   background-color: #383c59;
   min-height: 100vh;
+  margin-bottom: 0;
+  padding-bottom: 0;
+}
+
+.loading-container,
+.error-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+  background-color: #383c59;
+  color: white;
+  font-size: 1.2rem;
+  margin: 0;
+  padding: 0;
 }
 
 .filme-detalhe-container {
@@ -11,14 +26,14 @@
   border-radius: 16px;
   gap: 80px;
   max-width: 1200px;
-  margin: 40px auto;
+  margin: 40px auto 0 auto;
+  padding-bottom: 40px;
 }
 
 .linha-branca {
   border: none;
   border-top: 1px solid white;
 }
-
 
 .poster-section {
   display: flex;
@@ -35,6 +50,7 @@
 
 .elenco{
   margin-top: 80px;
+  margin-bottom: 0;
 }
 
 .info-section {
@@ -65,8 +81,6 @@
   }
 }
 
-
-
 .generos {
   margin: 15px 0;
 
@@ -82,12 +96,12 @@
   }
 }
 
-
 .carousel-container {
   display: flex;
   align-items: center;
   gap: 10px;
   margin-top: 20px;
+  margin-bottom: 0;
 }
 
 .carousel-scroll {
@@ -125,6 +139,8 @@
     align-items: center;
     padding: 24px;
     gap: 40px;
+    margin: 20px auto 0 auto;
+    padding-bottom: 20px;
   }
 
   .info-section {
@@ -145,6 +161,8 @@
 @media (max-width: 480px) {
   .filme-detalhe-container {
     padding: 16px;
+    margin: 10px auto 0 auto;
+    padding-bottom: 10px;
   }
 
   .poster-section img {

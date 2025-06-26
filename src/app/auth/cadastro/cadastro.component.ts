@@ -19,6 +19,7 @@ import {
 import { ErrorStateMatcher } from '@angular/material/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
+import { ToastService } from '../../services/toast.service';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
     isErrorState(
@@ -56,7 +57,12 @@ export class Cadastro {
     mensagemErro: string = '';
     mensagemSucesso: string = '';
 
-    constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+    constructor(
+        private fb: FormBuilder, 
+        private authService: AuthService, 
+        private router: Router,
+        private toastService: ToastService
+    ) {
         this.cadastroForm = this.fb.group(
             {
                 nome: ['', Validators.required],
@@ -92,6 +98,7 @@ export class Cadastro {
 
             this.authService.register(nome, email, senha).subscribe({
                 next: (response) => {
+                    this.toastService.registerSuccess();
                     this.mensagemSucesso = 'Cadastro realizado com sucesso!';
                     this.mensagemErro = '';
                     console.log('Usuário cadastrado:', response);
@@ -99,11 +106,13 @@ export class Cadastro {
                 },
                 error: (error) => {
                     console.error('Erro ao cadastrar:', error);
+                    this.toastService.registerError();
                     this.mensagemErro = 'Erro ao cadastrar. Tente novamente.';
                     this.mensagemSucesso = '';
                 }
             });
         } else {
+            this.toastService.warning('Preencha todos os campos corretamente.', 'Campos Inválidos');
             this.mensagemErro = 'Preencha todos os campos corretamente.';
         }
     }

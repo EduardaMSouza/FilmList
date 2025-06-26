@@ -8,6 +8,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Filme as FilmeBase } from '../../services/filme.service';
 import { CarrosselComponent } from '../../shared/carrossel/carrossel';
 import { HeaderComponent } from '../../components/header/header';
+import { ToastService } from '../../services/toast.service';
 
 interface CastMember {  
   name: string;
@@ -50,7 +51,8 @@ export class FilmeDetalheComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private filmeService: FilmeService,
-    private http: HttpClient
+    private http: HttpClient,
+    private toastService: ToastService
   ) {}
 
   ngOnInit(): void {
@@ -90,6 +92,7 @@ export class FilmeDetalheComponent implements OnInit {
       error: () => {
         this.erro = 'Erro ao buscar filme ou filme não encontrado.';
         this.carregando = false;
+        this.toastService.error('Erro ao buscar filme ou filme não encontrado.', 'Erro');
       },
     });
   }

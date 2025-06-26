@@ -24,9 +24,17 @@
     </button>
   </div>
 
+  <button class="logout-btn hide-mobile" (click)="logout()" aria-label="Sair">
+    <mat-icon>logout</mat-icon>
+  </button>
+
   <div class="menu-mobile" *ngIf="menuAberto">
     <a [routerLink]="['/inicio']" (click)="menuAberto = false">Início</a>
     <a [routerLink]="['/filmes']" (click)="menuAberto = false">Filmes</a>
     <a [routerLink]="['/minha-lista']" (click)="menuAberto = false">Minha Lista</a>
+    <button class="logout-btn-mobile" (click)="logout(); menuAberto = false">
+      <mat-icon>logout</mat-icon>
+      Sair
+    </button>
   </div>
 </div>

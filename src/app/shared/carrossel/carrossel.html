@@ -1,7 +1,7 @@
 <section class="secao w-full flex flex-col items-center my-8">
   <h2 class="text-xl font-semibold mb-4 text-center">{{ titulo }}</h2>
   <div #carrosselWrapper class="carrossel-wrapper w-full flex flex-row items-center justify-center bg-white rounded-xl shadow-md py-4">
-    <button class="nav-btn mr-2" (click)="scrollLeft()" [disabled]="!canScrollLeft">
+    <button class="nav-btn mr-2 m-3" (click)="scrollLeft()" [disabled]="!canScrollLeft">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
         <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
       </svg>

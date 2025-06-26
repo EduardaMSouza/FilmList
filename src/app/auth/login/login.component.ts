@@ -16,6 +16,7 @@ import { ErrorStateMatcher } from '@angular/material/core';
 import { NgForm, FormGroupDirective, FormControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
+import { ToastService } from '../../services/toast.service';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
     isErrorState(
@@ -53,7 +54,12 @@ export class Login {
     matcher = new MyErrorStateMatcher();
     mensagemErro: string = '';
 
-    constructor(private fb: FormBuilder, private authService: AuthService, private router: Router) {
+    constructor(
+        private fb: FormBuilder, 
+        private authService: AuthService, 
+        private router: Router,
+        private toastService: ToastService
+    ) {
         this.loginForm = this.fb.group({
             email: ['', [Validators.required, Validators.email]],
             senha: ['', [Validators.required, Validators.minLength(3)]],  
@@ -76,17 +82,18 @@ export class Login {
             this.authService.login(email, senha).subscribe({
                 next: (response) => {
                     this.authService.saveToken(response.token);
-
+                    this.toastService.loginSuccess();
                     this.router.navigate(['/auth/inicio']);
-
                     console.log('Login bem-sucedido:', response);
                 },
                 error: (error) => {
                     console.error('Erro ao fazer login:', error);
+                    this.toastService.loginError();
                     this.mensagemErro = 'Email ou senha inválidos';
                 }
             });
         } else {
+            this.toastService.warning('Preencha todos os campos corretamente', 'Campos Inválidos');
             this.mensagemErro = 'Preencha todos os campos corretamente';
         }
     }

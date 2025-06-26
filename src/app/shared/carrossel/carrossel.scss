@@ -9,8 +9,9 @@
   }
 
   .carrossel-wrapper {
-    margin-left: auto;
-    margin-right: auto;
+    margin-left: -38px;
+    margin-right: 0;
+    width: calc(100% + 32px);
     display: flex;
     flex-direction: row;
     align-items: center;
@@ -35,6 +36,7 @@
       justify-content: center;
       margin-top: 8px;
       transition: background 0.2s;
+      margin: 0 16px;
       &:hover {
         background: #e0e0e0;
       }
@@ -46,7 +48,6 @@
       justify-content: center;
       padding-left: 0;
       padding-right: 0;
-      overflow-x: auto;
       scroll-behavior: smooth;
 
       .card {
