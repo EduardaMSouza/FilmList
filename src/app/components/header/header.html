@@ -2,7 +2,6 @@
   <nav class="menu-navegacao">
     <a [routerLink]="['/inicio']" class="menu-item hide-mobile">Início</a>
     <a [routerLink]="['/filmes']" class="menu-item">Filmes</a>
-    <a [routerLink]="['/mais-votados']" class="menu-item hide-mobile">Mais votados</a>
     <a [routerLink]="['/minha-lista']" class="menu-item hide-mobile">Minha Lista</a>
     <button class="menu-hamburguer" (click)="menuAberto = !menuAberto">&#9776;</button>
   </nav>
@@ -20,7 +19,6 @@
   <div class="menu-mobile" *ngIf="menuAberto">
     <a [routerLink]="['/inicio']" (click)="menuAberto = false">Início</a>
     <a [routerLink]="['/filmes']" (click)="menuAberto = false">Filmes</a>
-    <a [routerLink]="['/mais-votados']" (click)="menuAberto = false">Mais votados</a>
     <a [routerLink]="['/minha-lista']" (click)="menuAberto = false">Minha Lista</a>
   </div>
 </div>

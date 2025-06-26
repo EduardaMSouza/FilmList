@@ -30,13 +30,6 @@
   </div>
 </div>
 
-<nav class="menu-navegacao">
-  <a [routerLink]="['/inicio']" class="menu-item hide-mobile">Início</a>
-  <a [routerLink]="['/filmes']" class="menu-item">Filmes</a>
-  <a [routerLink]="['/mais-votados']" class="menu-item">Mais votados</a>
-  <a [routerLink]="['/minha-lista']" class="menu-item">Minha Lista</a>
-  <input type="text" class="menu-search" placeholder="Buscar...">
-</nav>
 
 <div *ngIf="filmesContinuarAssistindo.length > 0" class="carrossel-wrapper">
   <app-carrossel [titulo]="'Continuar assistindo'" [filmes]="filmesContinuarAssistindo"></app-carrossel>
