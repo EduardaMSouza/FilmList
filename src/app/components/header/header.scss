@@ -6,8 +6,10 @@
   align-items: center;
   flex-direction: row;
   padding: 0 20px;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 80%, rgba(0, 0, 0, 0));
+  box-shadow: 0 60px 80px -20px rgba(0, 0, 0, 0.5);
+ background-color: #111;
   font-family: 'Poppins', sans-serif;
+  max-height: 80px;
 }
 
 .menu-hamburguer {
@@ -86,7 +88,6 @@
   }
 
   @media (max-width: 600px) {
-    position: static;
     margin: 12px auto 0 auto;
     justify-content: center;
     width: 90%;
@@ -170,4 +171,52 @@
     width: 100%;
     max-width: 100%;
   }
+}
+
+.menu-mobile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.7) 80%, rgba(0, 0, 0, 0));
+  border-radius: 0 0 12px 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  padding: 12px 0 8px 0;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  z-index: 2000;
+  animation: fadeInMenu 0.2s;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+
+  a {
+    color: #fff;
+    text-decoration: none;
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 12px 0;
+    width: 100%;
+    text-align: center;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+    transition: color 0.2s, background 0.2s;
+    letter-spacing: 0.5px;
+    background: transparent;
+    opacity: 1;
+
+    &:last-child {
+      border-bottom: none;
+    }
+    &:hover {
+      color: #e50914;
+      background: rgba(255,255,255,0.04);
+    }
+  }
+}
+
+@keyframes fadeInMenu {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
 }

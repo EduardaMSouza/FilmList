@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Output, OnInit } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 
 @Component({
@@ -12,13 +12,21 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './header.html',
   styleUrls: ['./header.scss'],
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   menuAberto = false;
   busca: string = '';
 
   @Output() buscaChange = new EventEmitter<string>();
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private route: ActivatedRoute) {}
+
+  ngOnInit() {
+    this.route.queryParams.subscribe(params => {
+      if (params['busca'] !== undefined) {
+        this.busca = params['busca'];
+      }
+    });
+  }
 
   filtrarFilmes() {
     this.buscaChange.emit(this.busca);
