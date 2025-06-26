@@ -3,11 +3,12 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule, RouterModule, FormsModule],
+  imports: [CommonModule, RouterModule, FormsModule, MatIconModule],
   templateUrl: './header.html',
   styleUrls: ['./header.scss'],
 })
@@ -26,5 +27,10 @@ export class HeaderComponent {
   onEnterBusca() {
     this.buscaChange.emit(this.busca);
     this.router.navigate(['/filmes'], { queryParams: { busca: this.busca } });
+  }
+
+  clearBusca() {
+    this.busca = '';
+    this.filtrarFilmes();
   }
 }
