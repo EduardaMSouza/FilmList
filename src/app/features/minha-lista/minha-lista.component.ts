@@ -1,23 +1,21 @@
 import { Component, OnInit } from '@angular/core';
-import { FilmeService } from '../../services/filme.service';
-import { UserMovieService } from '../../services/user-movie.service';
+import { FilmeService } from '../../core/services/filme.service';
+import { UserMovieService } from '../../core/services/user-movie.service';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
-import { CarrosselComponent } from '../../shared/carrossel/carrossel';
+import { CarrosselComponent } from '../../shared/components/carrossel.component';
 import { FormsModule } from '@angular/forms';
-import { HeaderComponent } from '../../components/header/header';
+import { HeaderComponent } from '../../layout/header.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
-import { ToastService } from '../../services/toast.service';
+import { ToastService } from '../../core/services/toast.service';
 
 @Component({
   selector: 'app-minha-lista',
-  standalone: true,
-  imports: [HeaderComponent, CommonModule, RouterModule, CarrosselComponent, FormsModule, MatSelectModule, MatFormFieldModule],
-  templateUrl: './minha-lista.html',
-  styleUrl: './minha-lista.scss'
+  templateUrl: './minha-lista.component.html',
+  styleUrl: './minha-lista.component.scss'
 })
-export class MinhaLista implements OnInit {
+export class MinhaListaComponent implements OnInit {
   showSearchInput = false;
   filmes: any[] = [];
   filmesFiltrados: any[] = [];

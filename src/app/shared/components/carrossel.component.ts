@@ -4,10 +4,8 @@ import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-carrossel',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './carrossel.html',
-  styleUrls: ['./carrossel.scss']
+  templateUrl: './carrossel.component.html',
+  styleUrls: ['./carrossel.component.scss']
 })
 export class CarrosselComponent implements OnInit, AfterViewInit {
   @Input() titulo: string = '';

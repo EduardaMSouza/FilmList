@@ -1,32 +1,48 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
+import { HttpClientModule } from '@angular/common/http';
+import { RouterModule } from '@angular/router';
 
-import { AppComponent } from './app.component'; 
-import { FilmeDetalheComponent } from './pages/filme-detalhes/filme-detalhe';
-import { Card } from './shared/card/cast-card';
-import { RatingComponent } from './rating/rating.component';
-import { tokenInterceptor } from './interceptors/token.interceptor';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { AppComponent } from './app.component';
+import { routes } from './app.routes';
+
+// Core Module
+import { CoreModule } from './core/core.module';
+
+// Shared Module
+import { SharedModule } from './shared/shared.module';
+
+// Layout Module
+import { LayoutModule } from './layout/layout.module';
+
+// Feature Modules
+import { AuthFeatureModule } from './features/auth/auth-feature.module';
+import { FilmesFeatureModule } from './features/filmes/filmes-feature.module';
+import { MinhaListaFeatureModule } from './features/minha-lista/minha-lista-feature.module';
 
 @NgModule({
+  declarations: [
+    AppComponent
+  ],
   imports: [
     BrowserModule,
-    FormsModule,
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatInputModule,
-    FilmeDetalheComponent,
-    Card,
-    RatingComponent,
-    FormsModule
+    HttpClientModule,
+    RouterModule.forRoot(routes),
+    
+    // Core Module (deve ser importado apenas uma vez)
+    CoreModule,
+    
+    // Shared Module
+    SharedModule,
+    
+    // Layout Module
+    LayoutModule,
+    
+    // Feature Modules
+    AuthFeatureModule,
+    FilmesFeatureModule,
+    MinhaListaFeatureModule
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }

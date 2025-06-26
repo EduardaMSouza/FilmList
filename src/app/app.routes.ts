@@ -1,18 +1,13 @@
 import { Routes } from '@angular/router';
-import { Login } from './auth/login/login.component';
-import { Cadastro } from './auth/cadastro/cadastro.component';
-import { Inicio } from './auth/inicio/inicio';
-import { FilmeDetalheComponent } from './pages/filme-detalhes/filme-detalhe';
-import { MinhaLista } from './auth/minha-lista/minha-lista';
-import { Filmes } from './auth/filmes/filmes';
+import { LoginComponent } from './features/auth/login.component';
+import { CadastroComponent } from './features/auth/cadastro.component';
+import { FilmeDetalheComponent } from './features/filmes/filme-detalhe.component';
+import { MinhaListaComponent } from './features/minha-lista/minha-lista.component';
 
 export const routes: Routes = [
-  { path: 'auth/login', component: Login },
-  { path: 'auth/register', component: Cadastro },
-  { path: 'auth/inicio', component: Inicio },
-  { path: 'minha-lista', component: MinhaLista },
-  { path: 'inicio', component: Inicio },
-  { path: 'filmes', component: Filmes },
+  { path: 'auth/login', component: LoginComponent },
+  { path: 'auth/register', component: CadastroComponent },
+  { path: 'minha-lista', component: MinhaListaComponent },
   { path: 'filme/:id', component: FilmeDetalheComponent },
   { path: '', redirectTo: 'auth/login', pathMatch: 'full' },  
   { path: '**', redirectTo: 'auth/login', pathMatch: 'full' },

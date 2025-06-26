@@ -2,21 +2,27 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+
+import { LoginComponent } from './login.component';
+import { CadastroComponent } from './cadastro.component';
 import { AuthRoutingModule } from './auth-routing.module';
-import { Login } from './login/login.component';   
-import { Cadastro } from './cadastro/cadastro.component';
-import { Inicio } from './inicio/inicio';
+import { MaterialModule } from '../shared/material-module';
 
 @NgModule({
+  declarations: [
+    LoginComponent,
+    CadastroComponent
+  ],
   imports: [
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    RouterModule,
     AuthRoutingModule,
-    Login,    
-    Cadastro,
-    Inicio
+    MaterialModule
+  ],
+  exports: [
+    LoginComponent,
+    CadastroComponent
   ]
 })
-export class AuthModule { }
+export class AuthFeatureModule { } 
