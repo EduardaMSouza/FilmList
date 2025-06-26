@@ -112273,6 +112273,13 @@
       "movieId": 296096,
       "status": "ja-assisti",
       "rating": 9
+    },
+    {
+      "id": 590476,
+      "userId": 7,
+      "movieId": 1233413,
+      "status": "pra-assistir",
+      "rating": null
     }
   ],
   "movies": [

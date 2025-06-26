@@ -7,11 +7,12 @@ import { CarrosselComponent } from '../../shared/carrossel/carrossel';
 import { FormsModule } from '@angular/forms';
 import { NouisliderModule } from 'ng2-nouislider';
 import { HeaderComponent } from '../../components/header/header';
+import { MatSelectModule } from '@angular/material/select';
 
 @Component({
   selector: 'app-filmes',
   standalone: true,
-  imports: [HeaderComponent, CommonModule, RouterModule, CarrosselComponent, FormsModule, NouisliderModule],
+  imports: [HeaderComponent, CommonModule, RouterModule, CarrosselComponent, FormsModule, NouisliderModule, MatSelectModule],
   templateUrl: './filmes.html',
   styleUrl: './filmes.scss'
 })
@@ -22,7 +23,6 @@ export class Filmes implements OnInit {
   todosFilmes: any[] = [];
   busca: string = '';
   
-  // Filtros de ano e gêneros para o novo layout
   anoMin = 1910;
   anoMax = 2025;
   anosSelecionados: number[] = [this.anoMin, this.anoMax];
@@ -40,7 +40,6 @@ export class Filmes implements OnInit {
 
   filtros = {
     generos: {} as { [key: string]: boolean },
-    // outros filtros podem ser adicionados aqui
   };
 
   menuAberto = false;
@@ -50,6 +49,8 @@ export class Filmes implements OnInit {
 
   paginaAtual: number = 1;
   tamanhoPagina: number = 8;
+
+  ordenacao: string = 'nota';
 
   constructor(
     private filmeService: FilmeService,
@@ -69,7 +70,7 @@ export class Filmes implements OnInit {
       this.todosFilmes = filmes;
       this.filmes = [...this.todosFilmes];
       this.filmesFiltrados = [...this.todosFilmes];
-      console.log('Todos os filmes:', this.todosFilmes);
+      this.ordenarFilmes();
       if (this.busca) {
         setTimeout(() => this.filtrarFilmes(), 0);
       }
@@ -142,14 +143,12 @@ export class Filmes implements OnInit {
   aplicarFiltros() {
     const generosAtivos = Object.keys(this.filtros.generos).filter(g => this.filtros.generos[g]);
     if (generosAtivos.length === 1) {
-      // Filtro de ano + gênero no backend
       this.filmeService.getFilmesPorAnoEGenero(this.anosSelecionados[0], this.anosSelecionados[1], generosAtivos[0])
         .subscribe(filmes => {
           this.filmesFiltrados = filmes;
           this.filtrarFilmes();
         });
     } else {
-      // Filtro de ano no backend, múltiplos gêneros no frontend
       this.filmeService.getFilmesPorAno(this.anosSelecionados[0], this.anosSelecionados[1])
         .subscribe(filmes => {
           if (generosAtivos.length > 1) {
@@ -175,16 +174,27 @@ export class Filmes implements OnInit {
     this.filtrarFilmes();
   }
 
+  ordenarFilmes() {
+    if (this.ordenacao === 'nota') {
+      this.filmes.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+    } else if (this.ordenacao === 'nome') {
+      this.filmes.sort((a, b) => a.title.localeCompare(b.title));
+    }
+    this.paginaAtual = 1;
+  }
+
   filtrarFilmes() {
     const termo = this.busca.trim().toLowerCase();
     if (!termo) {
       this.filmes = [...this.filmesFiltrados];
+      this.ordenarFilmes();
       this.paginaAtual = 1;
       return;
     }
     this.filmes = this.filmesFiltrados.filter(filme =>
       filme.title.toLowerCase().includes(termo)
     );
+    this.ordenarFilmes();
     this.paginaAtual = 1;
   }
 

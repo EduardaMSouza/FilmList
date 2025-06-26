@@ -123,7 +123,10 @@ server.get('/movies', (req: Request, res: Response) => {
       id: movie.id,
       title: movie.title,
       poster_url: movie.poster_url || movie.thumbnail || '',
-      rating: avgRating
+      rating: avgRating,
+      release_date: movie.release_date,
+      genre_names: Array.isArray(movie.genres) ? movie.genres : (movie.genres ? [movie.genres] : []),
+      overview: movie.overview || ''
     };
   });
 
@@ -197,7 +200,11 @@ server.get('/userMovies', (req: Request & { user?: any }, res: Response) => {
       Math.round((allUserMovies.reduce((sum: number, um: any) => sum + um.rating, 0) / allUserMovies.length) * 10) / 10 : null;
     return {
       ...userMovie,
-      movie: movie ? { ...movie, rating: avgRating } : null
+      movie: movie ? { 
+        ...movie, 
+        rating: avgRating,
+        genre_names: Array.isArray(movie.genres) ? movie.genres : (movie.genres ? [movie.genres] : [])
+      } : null
     };
   });
 

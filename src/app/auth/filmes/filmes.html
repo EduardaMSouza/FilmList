@@ -54,6 +54,16 @@
       </div>
     </div>
 
+    <div class="ordenacao-wrapper">
+      <mat-form-field appearance="outline" class="ordenacao-mat-field">
+        <mat-label>Ordenar por</mat-label>
+        <mat-select [(ngModel)]="ordenacao" (selectionChange)="ordenarFilmes()">
+          <mat-option value="nota">Nota</mat-option>
+          <mat-option value="nome">Nome (A-Z)</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
     <button 
       class="btn-limpar-filtros" 
       (click)="limparFiltros()"
@@ -99,13 +109,33 @@
         (click)="modoAdicao && toggleSelecaoFilme(filme, $event)"
         [routerLink]="!modoAdicao ? ['/filme', filme.id] : null"
       >
-        <img [src]="filme.poster_url" [alt]="filme.title" />
-        <div class="info-filme">
-          <strong>{{ (paginaAtual - 1) * tamanhoPagina + i + 1 }}. {{ filme.title }}</strong><br />
-          <span class="data-filme">{{ filme.release_date }}</span><br />
-          <span class="genero-filme">{{ filme.genre_names?.join(', ') || 'Gênero não informado' }}</span><br />
-          Sinopse: {{ filme.overview | slice:0:100 }}...
+        <div class="poster-wrapper">
+          <img [src]="filme.poster_url" [alt]="filme.title" />
+          <div class="nota">
+            {{ (filme.averageRating || filme.rating || 0) | number:'1.1-1' }}
+          </div>
         </div>
+        <div class="info-filme">
+          <strong>{{ (paginaAtual - 1) * tamanhoPagina + i + 1 }}. {{ filme.title }}</strong>
+          <span class="data-filme">{{ filme.release_date | date:'dd/MM/yyyy' }}</span><br />
+          <div class="genero-filme">
+          <ng-container *ngIf="filme.genre_names?.length; else generoNaoInformado">
+            <span 
+              class="badge-genero" 
+              *ngFor="let genero of filme.genre_names">
+              {{ genero }}
+            </span>
+          </ng-container>
+  <ng-template #generoNaoInformado>
+    <span class="badge-genero">Gênero não informado</span>
+  </ng-template>
+</div>
+
+          <span class="sinopse">
+            Sinopse: {{ filme.overview | slice:0:100 }}...
+          </span>
+        </div>
+
         <div class="overlay-selecao" *ngIf="modoAdicao">
           <div class="checkbox-selecao" [class.checked]="isFilmeSelecionado(filme)">
             <span *ngIf="isFilmeSelecionado(filme)">✓</span>

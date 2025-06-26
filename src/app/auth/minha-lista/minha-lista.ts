@@ -6,11 +6,13 @@ import { RouterModule, Router } from '@angular/router';
 import { CarrosselComponent } from '../../shared/carrossel/carrossel';
 import { FormsModule } from '@angular/forms';
 import { HeaderComponent } from '../../components/header/header';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-minha-lista',
   standalone: true,
-  imports: [HeaderComponent, CommonModule, RouterModule, CarrosselComponent, FormsModule],
+  imports: [HeaderComponent, CommonModule, RouterModule, CarrosselComponent, FormsModule, MatSelectModule, MatFormFieldModule],
   templateUrl: './minha-lista.html',
   styleUrl: './minha-lista.scss'
 })
@@ -24,8 +26,21 @@ export class MinhaLista implements OnInit {
   filtros = {
     assistido: false,
     praAssistir: false,
-    jaAssistido: false
+    jaAssistido: false,
+    generos: {} as { [key: string]: boolean }
   };
+
+  generosPrincipais = ['Ação', 'Aventura', 'Romance'];
+  generosExtras = ['Comédia', 'Drama', 'Ficção', 'Terror', 'Suspense', 'Animação', 'Documentário'];
+  mostrarTodosGeneros = false;
+
+  get generosVisiveis() {
+    return this.generosPrincipais;
+  }
+
+  get generosOcultos() {
+    return this.generosExtras;
+  }
 
   menuAberto = false;
   
@@ -34,6 +49,8 @@ export class MinhaLista implements OnInit {
 
   paginaAtual: number = 1;
   tamanhoPagina: number = 8;
+
+  ordenacao: string = 'nota';
 
   constructor(
     private filmeService: FilmeService,
@@ -46,6 +63,7 @@ export class MinhaLista implements OnInit {
       this.todosFilmes = filmes;
       this.filmes = [...this.todosFilmes];
       this.filmesFiltrados = [...this.todosFilmes];
+      this.ordenarFilmes();
       console.log('Filmes da minha lista:', this.todosFilmes);
     });
   }
@@ -106,14 +124,51 @@ export class MinhaLista implements OnInit {
     this.modoRemocao = false;
   }
 
+  temFiltrosAtivos(): boolean {
+    return Object.values(this.filtros.generos).some(filtro => filtro === true) ||
+           this.filtros.assistido || 
+           this.filtros.praAssistir || 
+           this.filtros.jaAssistido;
+  }
+
+  toggleGenero(genero: string) {
+    this.filtros.generos[genero] = !this.filtros.generos[genero];
+    this.aplicarFiltros();
+  }
+
   aplicarFiltros() {
     this.filmesFiltrados = this.todosFilmes.filter(filme => {
-      const nenhumFiltroAtivo = !this.filtros.assistido && !this.filtros.praAssistir && !this.filtros.jaAssistido;
-      if (nenhumFiltroAtivo) return true;
-      if (this.filtros.assistido && filme.status === 'assistindo') return true;
-      if (this.filtros.praAssistir && (filme.status === 'pra-assistir' || filme.status === '')) return true;
-      if (this.filtros.jaAssistido && filme.status === 'ja-assisti') return true;
-      return false;
+      // Filtro por status
+      const generosAtivos = Object.keys(this.filtros.generos).filter(g => this.filtros.generos[g]);
+      const nenhumFiltroStatus = !this.filtros.assistido && !this.filtros.praAssistir && !this.filtros.jaAssistido;
+      const nenhumFiltroGenero = generosAtivos.length === 0;
+      
+      // Se não há filtros ativos, mostra todos
+      if (nenhumFiltroStatus && nenhumFiltroGenero) return true;
+      
+      // Aplica filtro de status
+      let passaFiltroStatus = nenhumFiltroStatus;
+      if (!passaFiltroStatus) {
+        if (this.filtros.assistido && filme.status === 'assistindo') passaFiltroStatus = true;
+        if (this.filtros.praAssistir && (filme.status === 'pra-assistir' || filme.status === '')) passaFiltroStatus = true;
+        if (this.filtros.jaAssistido && filme.status === 'ja-assisti') passaFiltroStatus = true;
+      }
+      
+      // Aplica filtro de gênero
+      let passaFiltroGenero = nenhumFiltroGenero;
+      if (!passaFiltroGenero) {
+        if (filme.genre_names && Array.isArray(filme.genre_names)) {
+          passaFiltroGenero = generosAtivos.some(g => filme.genre_names.includes(g));
+        } else if (filme.genres) {
+          if (Array.isArray(filme.genres)) {
+            passaFiltroGenero = generosAtivos.some(g => filme.genres.includes(g));
+          } else {
+            passaFiltroGenero = generosAtivos.some(g => filme.genres === g);
+          }
+        }
+      }
+      
+      return passaFiltroStatus && passaFiltroGenero;
     });
     this.filtrarFilmes();
     this.paginaAtual = 1;
@@ -128,23 +183,35 @@ export class MinhaLista implements OnInit {
     this.filtros = {
       assistido: false,
       praAssistir: false,
-      jaAssistido: false
+      jaAssistido: false,
+      generos: {} as { [key: string]: boolean }
     };
     this.filmes = [...this.todosFilmes];
     this.filmesFiltrados = [...this.todosFilmes];
     this.filtrarFilmes();
   }
 
+  ordenarFilmes() {
+    if (this.ordenacao === 'nota') {
+      this.filmes.sort((a, b) => ((b.rating || b.averageRating || 0) - (a.rating || a.averageRating || 0)));
+    } else if (this.ordenacao === 'nome') {
+      this.filmes.sort((a, b) => a.title.localeCompare(b.title));
+    }
+    this.paginaAtual = 1;
+  }
+
   filtrarFilmes() {
     const termo = this.busca.trim().toLowerCase();
     if (!termo) {
       this.filmes = [...this.filmesFiltrados];
+      this.ordenarFilmes();
       this.paginaAtual = 1;
       return;
     }
     this.filmes = this.filmesFiltrados.filter(filme =>
       filme.title.toLowerCase().includes(termo)
     );
+    this.ordenarFilmes();
     this.paginaAtual = 1;
   }
 
@@ -185,7 +252,7 @@ export class MinhaLista implements OnInit {
   }
 
   get totalPaginas(): number {
-    return Math.ceil(this.filmes.length / this.tamanhoPagina) || 1;
+    return Math.ceil(this.filmes.length / this.tamanhoPagina);
   }
 
   proximaPagina() {
@@ -201,25 +268,23 @@ export class MinhaLista implements OnInit {
   }
 
   irParaPagina(pagina: number) {
-    if (pagina >= 1 && pagina <= this.totalPaginas) {
-      this.paginaAtual = pagina;
-    }
+    this.paginaAtual = pagina;
   }
 
   paginasExibidas(): number[] {
-  const paginas: number[] = [];
-  const inicio = Math.max(1, this.paginaAtual - 2);
-  const fim = Math.min(this.totalPaginas, this.paginaAtual + 2);
-
-  for (let i = inicio; i <= fim; i++) {
-    paginas.push(i);
-  }
-  return paginas;
+    const paginas: number[] = [];
+    const inicio = Math.max(1, this.paginaAtual - 2);
+    const fim = Math.min(this.totalPaginas, this.paginaAtual + 2);
+    
+    for (let i = inicio; i <= fim; i++) {
+      paginas.push(i);
+    }
+    
+    return paginas;
   }
 
   onBuscaChange(valor: string) {
     this.busca = valor;
     this.filtrarFilmes();
   }
-
 }

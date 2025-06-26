@@ -103,7 +103,10 @@ server.get('/movies', (req, res) => {
             id: movie.id,
             title: movie.title,
             poster_url: movie.poster_url || movie.thumbnail || '',
-            rating: avgRating
+            rating: avgRating,
+            release_date: movie.release_date,
+            genre_names: Array.isArray(movie.genres) ? movie.genres : (movie.genres ? [movie.genres] : []),
+            overview: movie.overview || ''
         };
     });
     res.status(200).json({
@@ -154,7 +157,7 @@ server.get('/userMovies', (req, res) => {
         const allUserMovies = db.userMovies.filter((um) => um.movieId === userMovie.movieId && um.rating != null);
         const avgRating = allUserMovies.length > 0 ?
             Math.round((allUserMovies.reduce((sum, um) => sum + um.rating, 0) / allUserMovies.length) * 10) / 10 : null;
-        return Object.assign(Object.assign({}, userMovie), { movie: movie ? Object.assign(Object.assign({}, movie), { rating: avgRating }) : null });
+        return Object.assign(Object.assign({}, userMovie), { movie: movie ? Object.assign(Object.assign({}, movie), { rating: avgRating, genre_names: Array.isArray(movie.genres) ? movie.genres : (movie.genres ? [movie.genres] : []) }) : null });
     });
     res.status(200).json(response);
 });
