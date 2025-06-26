@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, ViewChild, ElementRef, OnInit, HostListener } from '@angular/core';
+import { Component, Input, ViewChild, ElementRef, OnInit, AfterViewInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 
 @Component({
@@ -9,16 +9,20 @@ import { Router } from '@angular/router';
   templateUrl: './carrossel.html',
   styleUrls: ['./carrossel.scss']
 })
-export class CarrosselComponent implements OnInit {
+export class CarrosselComponent implements OnInit, AfterViewInit {
   @Input() titulo: string = '';
   @Input() filmes: any[] = [];
+  @ViewChild('carrosselWrapper', { static: false }) carrosselWrapper!: ElementRef;
+  @ViewChild('card', { static: false }) card!: ElementRef;
   pageIndex: number = 0;
-  pageSize: number = 10;
+  pageSize: number = 1;
 
   constructor(private router: Router) {}
 
-  ngOnInit() {
-    this.setPageSize();
+  ngOnInit() {}
+
+  ngAfterViewInit() {
+    setTimeout(() => this.setPageSize(), 0);
   }
 
   @HostListener('window:resize')
@@ -28,12 +32,12 @@ export class CarrosselComponent implements OnInit {
 
   setPageSize() {
     const width = window.innerWidth;
-    if (width < 640) { // mobile
-      this.pageSize = 2;
-    } else if (width < 1024) { // tablet
-      this.pageSize = 5;
+    if (width <= 600) { // mobile
+      this.pageSize = 1;
+    } else if (width <= 1024) { // tablet
+      this.pageSize = 4;
     } else { // desktop
-      this.pageSize = 10;
+      this.pageSize = 7;
     }
     this.pageIndex = 0;
   }

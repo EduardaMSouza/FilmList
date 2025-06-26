@@ -9,9 +9,12 @@
   }
 
   .carrossel-wrapper {
+    margin-left: auto;
+    margin-right: auto;
     display: flex;
-    align-items: flex-start;
-    gap: 10px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
     background: #fff;
     padding: 18px 0 18px 0;
     border-radius: 12px;
@@ -39,10 +42,12 @@
 
     .carrossel {
       display: flex;
+      gap: 1.5rem;
+      justify-content: center;
+      padding-left: 0;
+      padding-right: 0;
       overflow-x: auto;
       scroll-behavior: smooth;
-      gap: 24px;
-      padding: 0 8px;
 
       .card {
         position: relative;
