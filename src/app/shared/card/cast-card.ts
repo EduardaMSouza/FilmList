@@ -3,10 +3,11 @@ import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-cast-card',
-  templateUrl: './cast-card.component.html',
-  styleUrls: ['./cast-card.component.scss']
+  imports: [CommonModule],
+  templateUrl: './cast-card.html',
+  styleUrls: ['./cast-card.scss']
 })
-export class CastCardComponent {
+export class Card {
   @Input() nome: string = '';
   @Input() nomePersonagem: string = '';
   @Input() imageUrl: string = '';

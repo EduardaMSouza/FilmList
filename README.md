@@ -1,60 +1,59 @@
-# Film List
+# FilmList
 
-Uma aplicação Angular para gerenciar sua lista de filmes favoritos.
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.2.
 
-## 📋 Sobre
+## Development server
 
-Film List é uma aplicação web que permite aos usuários:
-- Fazer login e cadastro
-- Adicionar filmes à sua lista pessoal
-- Visualizar detalhes dos filmes
-- Avaliar filmes que já assistiu
-- Filtrar e organizar sua lista
+To start a local development server, run:
 
-## 🏗️ Arquitetura
-
-O projeto segue uma arquitetura modular bem organizada:
-
-```
-src/app/
-├── core/           # Serviços e interceptors
-├── features/       # Funcionalidades (auth, filmes, minha-lista)
-├── layout/         # Componentes de layout (header)
-├── shared/         # Componentes reutilizáveis
-└── app.module.ts   # Módulo principal
+```bash
+ng serve
 ```
 
-## 🚀 Como Executar
+Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
-1. **Instalar dependências:**
-   ```bash
-   npm install
-   ```
+## Code scaffolding
 
-2. **Iniciar o servidor de desenvolvimento:**
-   ```bash
-   ng serve
-   ```
+Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
 
-3. **Acessar a aplicação:**
-   ```
-   http://localhost:4200
-   ```
+```bash
+ng generate component component-name
+```
 
-## 🛠️ Tecnologias
+For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
 
-- **Angular** - Framework principal
-- **Angular Material** - Componentes de UI
-- **ngx-toastr** - Notificações
-- **JSON Server** - API mock (pasta server/)
+```bash
+ng generate --help
+```
 
-## 📁 Estrutura Principal
+## Building
 
-- **Auth**: Login e cadastro de usuários
-- **Minha Lista**: Gerenciamento da lista de filmes
-- **Filmes**: Detalhes e informações dos filmes
-- **Shared**: Componentes reutilizáveis (cards, carrossel, rating)
+To build the project run:
 
-## 🔧 Desenvolvimento
+```bash
+ng build
+```
 
-Para mais detalhes sobre a arquitetura, consulte o arquivo `ARCHITECTURE.md`.
+This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+
+## Running unit tests
+
+To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+
+```bash
+ng test
+```
+
+## Running end-to-end tests
+
+For end-to-end (e2e) testing, run:
+
+```bash
+ng e2e
+```
+
+Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+
+## Additional Resources
+
+For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.

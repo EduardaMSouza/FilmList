@@ -18,8 +18,8 @@ import {
 } from '@angular/forms';
 import { ErrorStateMatcher } from '@angular/material/core';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../core/services/auth.service';
-import { ToastService } from '../../core/services/toast.service';
+import { AuthService } from '../../services/auth.service';
+import { ToastService } from '../../services/toast.service';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
     isErrorState(
@@ -37,11 +37,21 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 
 @Component({
     selector: 'cadastro',
+    standalone: true,
     encapsulation: ViewEncapsulation.None,
+    imports: [
+        MatButtonModule,
+        MatIconModule,
+        ReactiveFormsModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        CommonModule,
+    ],
     templateUrl: './cadastro.component.html',
     styleUrls: ['./cadastro.component.scss'],
 })
-export class CadastroComponent {
+export class Cadastro {
     cadastroForm: FormGroup;
     matcher = new MyErrorStateMatcher();
     mensagemErro: string = '';

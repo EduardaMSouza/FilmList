@@ -1,12 +1,14 @@
 import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges } from '@angular/core';
-import { UserMovieService } from '../../core/services/user-movie.service';
-import { ToastService } from '../../core/services/toast.service';
+import { UserMovieService } from '../services/user-movie.service';
+import { ToastService } from '../services/toast.service';
 
 @Component({
   selector: 'app-rating',
   templateUrl: './rating.component.html',
-  styleUrls: ['./rating.component.scss']
+  styleUrls: ['./rating.component.scss'],
+  imports: [CommonModule],
+  standalone: true,
 })
 export class RatingComponent implements OnInit {
   @Input() averageRating: number = 0;

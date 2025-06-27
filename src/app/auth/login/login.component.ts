@@ -15,8 +15,8 @@ import {
 import { ErrorStateMatcher } from '@angular/material/core';
 import { NgForm, FormGroupDirective, FormControl } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { AuthService } from '../../core/services/auth.service';
-import { ToastService } from '../../core/services/toast.service';
+import { AuthService } from '../../services/auth.service';
+import { ToastService } from '../../services/toast.service';
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
     isErrorState(
@@ -34,11 +34,21 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 
 @Component({
     selector: 'login',
+    standalone: true,
     encapsulation: ViewEncapsulation.None,
+    imports: [
+        MatButtonModule,
+        MatIconModule,
+        ReactiveFormsModule,
+        FormsModule,
+        MatFormFieldModule,
+        MatInputModule,
+        CommonModule,
+    ],
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
 })
-export class LoginComponent {
+export class Login {
     protected title = 'film-list';
     loginForm: FormGroup;
     matcher = new MyErrorStateMatcher();
@@ -73,7 +83,7 @@ export class LoginComponent {
                 next: (response) => {
                     this.authService.saveToken(response.token);
                     this.toastService.loginSuccess();
-                    this.router.navigate(['/minha-lista']);
+                    this.router.navigate(['/auth/inicio']);
                     console.log('Login bem-sucedido:', response);
                 },
                 error: (error) => {

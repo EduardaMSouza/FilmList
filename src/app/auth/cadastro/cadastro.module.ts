@@ -6,12 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 
-import { AppComponent } from './app.component'; 
-import { FilmeDetalheComponent } from './pages/filme-detalhes/filme-detalhe';
-import { Card } from './shared/card/cast-card';
-import { RatingComponent } from './rating/rating.component';
-import { tokenInterceptor } from './interceptors/token.interceptor';
-import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { Cadastro } from './cadastro.component'; 
 
 @NgModule({
   imports: [
@@ -22,11 +17,7 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
     MatIconModule,
     MatFormFieldModule,
     MatInputModule,
-    FilmeDetalheComponent,
-    Card,
-    RatingComponent,
-    FormsModule
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [Cadastro] 
 })
-export class AppModule { }
+export class CadastroModule { }

@@ -4,12 +4,14 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
-import { ToastService } from '../core/services/toast.service';
+import { ToastService } from '../../services/toast.service';
 
 @Component({
   selector: 'app-header',
-  templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
+  standalone: true,
+  imports: [CommonModule, RouterModule, FormsModule, MatIconModule],
+  templateUrl: './header.html',
+  styleUrls: ['./header.scss'],
 })
 export class HeaderComponent implements OnInit {
   menuAberto = false;
