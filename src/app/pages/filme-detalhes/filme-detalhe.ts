@@ -101,7 +101,7 @@ export class FilmeDetalheComponent implements OnInit {
     this.filmeService.getFilmesComNotas().subscribe((data: FilmeBase[]) => {
       this.filmes = data
         .filter(f => f.id !== this.filmeId)
-        .sort((a, b) => (b.rating || 0) - (a.rating || 0))
+        .sort((a, b) => (b.averageRating || b.rating || 0) - (a.averageRating || a.rating || 0))
         .slice(0, 10);
     }, () => {
       this.filmes = [];

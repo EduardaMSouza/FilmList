@@ -7,6 +7,7 @@ export interface Filme {
   title: string;
   poster_url: string;
   rating?: number | null;
+  averageRating?: number | null;
   genres?: string | string[];
 }
 
@@ -44,7 +45,8 @@ export class FilmeService {
 
           return {
             ...filme,
-            rating: media ? +media.toFixed(1) : null
+            rating: media ? +media.toFixed(1) : null,
+            averageRating: media ? +media.toFixed(1) : null
           };
         });
       })

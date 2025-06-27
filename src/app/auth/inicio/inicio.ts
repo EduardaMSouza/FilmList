@@ -57,7 +57,7 @@ export class Inicio implements OnInit, OnDestroy {
   ngOnInit() {
     this.filmeService.getFilmesComNotas().subscribe((data: any[]) => {
       this.filmes = data;
-      this.filmesMelhorAvaliados = [...data].sort((a, b) => (b.rating || 0) - (a.rating || 0)).slice(0, 20);
+      this.filmesMelhorAvaliados = [...data].sort((a, b) => (b.averageRating || b.rating || 0) - (a.averageRating || a.rating || 0)).slice(0, 20);
     });
     this.filmeService.getFilmesMinhaLista('assistindo').subscribe((data: any[]) => {
       this.filmesContinuarAssistindo = data;

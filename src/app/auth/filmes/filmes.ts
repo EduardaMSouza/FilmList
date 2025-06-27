@@ -180,7 +180,7 @@ export class Filmes implements OnInit {
 
   ordenarFilmes() {
     if (this.ordenacao === 'nota') {
-      this.filmes.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+      this.filmes.sort((a, b) => (b.averageRating || b.rating || 0) - (a.averageRating || a.rating || 0));
     } else if (this.ordenacao === 'nome') {
       this.filmes.sort((a, b) => a.title.localeCompare(b.title));
     }

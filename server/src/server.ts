@@ -124,6 +124,7 @@ server.get('/movies', (req: Request, res: Response) => {
       title: movie.title,
       poster_url: movie.poster_url || movie.thumbnail || '',
       rating: avgRating,
+      averageRating: avgRating,
       release_date: movie.release_date,
       genre_names: Array.isArray(movie.genres) ? movie.genres : (movie.genres ? [movie.genres] : []),
       overview: movie.overview || ''
@@ -161,12 +162,10 @@ server.get('/movies/:id', (req: Request & { user?: any }, res: Response) => {
   }
 
   const userMovies = db.userMovies.filter((r: any) => r.movieId === movieId);
+    const ratings = userMovies.filter((um: any) => um.movieId === movie.id && um.rating != null);
 
-  const averageRating = userMovies.length > 0
-    ? Math.round(
-        (userMovies.reduce((sum: number, r: any) => sum + r.rating, 0) / userMovies.length) * 10
-      ) / 10
-    : null;
+  const avgRating = ratings.length > 0 ?
+        Math.round((ratings.reduce((sum: number, um: any) => sum + um.rating, 0) / ratings.length) * 10) / 10 : null;
 
   let userMovieInfo = null;
   if (req.user) {
@@ -175,7 +174,7 @@ server.get('/movies/:id', (req: Request & { user?: any }, res: Response) => {
 
   res.status(200).json({
     ...movie,
-    averageRating,
+    averageRating: avgRating,
     totalUsers: userMovies.length,
     userRating: userMovieInfo?.rating ?? null,
     userStatus: userMovieInfo?.status ?? null 
@@ -203,6 +202,7 @@ server.get('/userMovies', (req: Request & { user?: any }, res: Response) => {
       movie: movie ? { 
         ...movie, 
         rating: avgRating,
+        averageRating: avgRating,
         genre_names: Array.isArray(movie.genres) ? movie.genres : (movie.genres ? [movie.genres] : [])
       } : null
     };
