@@ -112279,6 +112279,13 @@
       "movieId": 413846,
       "status": "pra-assistir",
       "rating": null
+    },
+    {
+      "id": 974573,
+      "userId": 2,
+      "movieId": 974573,
+      "status": "ja-assisti",
+      "rating": 10
     }
   ],
   "movies": [

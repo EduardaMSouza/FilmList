@@ -39,7 +39,9 @@
       <div class="linha-branca"></div>
 
       <div class="carousel-container">
-        <button (click)="scrollLeft()" class="carousel-button">⬅️</button>
+        <button (click)="scrollLeft()" class="carousel-button">
+          <span class="arrow-icon">‹</span>
+        </button>
 
         <div class="carousel-scroll" #scrollContainer>
           <app-cast-card
@@ -50,7 +52,9 @@
           </app-cast-card>
         </div>
 
-        <button (click)="scrollRight()" class="carousel-button">➡️</button>
+        <button (click)="scrollRight()" class="carousel-button">
+          <span class="arrow-icon">›</span>
+        </button>
       </div>
     </div>
   </div>
